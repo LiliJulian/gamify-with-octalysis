@@ -287,6 +287,27 @@
       color: #374151;
     }
 
+    /* 3-col examples grid */
+    .examples-grid-3col {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 10px; margin-bottom: 20px;
+    }
+
+    /* UI demo panels (dark) */
+    .ui-demos-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 10px; margin-bottom: 20px;
+    }
+    .ui-demo-panel {
+      background: #0d1117; border-radius: 10px;
+      padding: 12px; border: 1px solid #21262d; min-height: 90px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .ui-demo-label {
+      font-size: .6rem; font-weight: 700; letter-spacing: .5px;
+      text-transform: uppercase; color: #6b7280;
+    }
+
     /* Designer tip */
     .designer-tip {
       background: var(--bg);
@@ -414,7 +435,12 @@
       .explorer-wrap { grid-template-columns: 1fr; }
       .explorer-sticky { position: static; }
       .examples-grid { grid-template-columns: 1fr; }
+      .examples-grid-3col { grid-template-columns: 1fr 1fr; }
+      .ui-demos-row { grid-template-columns: 1fr; }
       .apply-steps, .about-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .examples-grid-3col { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -504,35 +530,76 @@
         <div class="drive-body">
           <p class="drive-desc">The user believes they're contributing to something greater than themselves — a larger mission, a legacy, or a destiny. They feel "chosen" or uniquely qualified to do the task. This is the most powerful and long-lasting drive when activated authentically.</p>
           <div class="examples-label">Real-World Examples</div>
-          <div class="examples-grid">
+          <div class="examples-grid-3col">
             <div class="example-card">
-              <div class="example-product">🌐 Wikipedia</div>
-              <span class="example-technique" style="background:#F59E0B">Higher Purpose</span>
-              <p class="example-body">Editors contribute freely because they believe they're building humanity's shared knowledge base.</p>
+              <div class="example-product">🌍 Wikipedia</div>
+              <span class="example-technique" style="background:#F59E0B">Humanity Hero</span>
+              <p class="example-body">Editors contribute without pay because they believe in free knowledge for all humanity.</p>
             </div>
             <div class="example-card">
-              <div class="example-product">🐙 Open Source (GitHub)</div>
-              <span class="example-technique" style="background:#F59E0B">Legacy Building</span>
-              <p class="example-body">Developers contribute code for free — the software they write outlives them and benefits millions.</p>
+              <div class="example-product">🐧 Open Source</div>
+              <span class="example-technique" style="background:#F59E0B">Co-Creator</span>
+              <p class="example-body">Developers contribute to codebases they'll never own — the collective mission is the reward.</p>
             </div>
             <div class="example-card">
-              <div class="example-product">🦜 Duolingo</div>
-              <span class="example-technique" style="background:#F59E0B">Narrative Calling</span>
-              <p class="example-body">"You're helping connect cultures." Language learning is framed as a mission, not just self-improvement.</p>
+              <div class="example-product">🦸 Superhero Narratives</div>
+              <span class="example-technique" style="background:#F59E0B">Narrative</span>
+              <p class="example-body">Games and apps that cast the user as "the chosen one" create immediate emotional investment.</p>
             </div>
             <div class="example-card">
-              <div class="example-product">❓ Quora</div>
+              <div class="example-product">💉 Blood Donation</div>
               <span class="example-technique" style="background:#F59E0B">Elitism</span>
-              <p class="example-body">Early invite-only access made users feel like specially selected knowledge-sharers, not just contributors.</p>
+              <p class="example-body">"You are one of the few people with Type O— who can help." Scarcity of the gift elevates the giver.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">🎮 World of Warcraft</div>
+              <span class="example-technique" style="background:#F59E0B">World-Defining</span>
+              <p class="example-body">Rich lore and faction identity make players feel part of a living history, not just playing a game.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">🌱 Ecosia Browser</div>
+              <span class="example-technique" style="background:#F59E0B">Inspiring Meaning</span>
+              <p class="example-body">Each search plants trees. The counter makes your daily browsing feel purposeful.</p>
             </div>
           </div>
-          <div class="examples-label">Techniques</div>
+          <div class="examples-label">Technique UI Examples</div>
+          <div class="ui-demos-row">
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Mission Counter</div>
+              <div style="text-align:center;padding:6px 0">
+                <div style="font-size:.65rem;color:#6b7280;margin-bottom:4px">Community Members</div>
+                <div style="font-size:1.8rem;font-weight:900;color:#F59E0B;letter-spacing:-.03em">84,271</div>
+                <div style="font-size:.62rem;color:#6b7280">designers, developers &amp; educators</div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Chosen Role Badge</div>
+              <div style="display:flex;align-items:center;gap:8px;padding:4px 0">
+                <div style="width:36px;height:36px;border-radius:50%;background:#78350f;display:flex;align-items:center;justify-content:center;font-size:1.1rem;border:2px solid #F59E0B">🌐</div>
+                <div>
+                  <div style="font-size:.72rem;font-weight:700;color:#e6edf3">Guardian of Knowledge</div>
+                  <div style="font-size:.62rem;color:#F59E0B">Chosen Role · Epic Tier</div>
+                </div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">World Narrative Banner</div>
+              <div style="background:linear-gradient(135deg,#78350f,#92400e);border-radius:6px;padding:8px;text-align:center">
+                <div style="font-size:.65rem;color:#fde68a;font-weight:700;letter-spacing:.5px">YOUR MISSION</div>
+                <div style="font-size:.78rem;color:#fff;line-height:1.4;margin-top:3px">Help 100,000 learners discover gamification</div>
+              </div>
+            </div>
+          </div>
+          <div class="examples-label">All Techniques</div>
           <div class="techniques-row">
-            <span class="technique-chip">Narrative &amp; lore</span>
-            <span class="technique-chip">Elitism / exclusivity</span>
-            <span class="technique-chip">Beginner's luck</span>
-            <span class="technique-chip">The Chosen One</span>
-            <span class="technique-chip">Co-creation stories</span>
+            <span class="technique-chip">Narrative / Storytelling</span>
+            <span class="technique-chip">Elitism</span>
+            <span class="technique-chip">World-Defining</span>
+            <span class="technique-chip">Beginners Luck</span>
+            <span class="technique-chip">Free Lunch</span>
+            <span class="technique-chip">Humanity Hero</span>
+            <span class="technique-chip">Co-Creator</span>
+            <span class="technique-chip">Inspiring Meaning</span>
           </div>
           <div class="designer-tip" style="border-color:#F59E0B">
             <div class="tip-label" style="color:#92400E">💡 Designer Tip</div>
@@ -557,36 +624,87 @@
         <div class="drive-body">
           <p class="drive-desc">The internal drive to make progress, develop skills, and overcome challenges. This is the most implemented drive in gamification — but points, badges, and leaderboards only work here when the underlying challenge is genuinely rewarding.</p>
           <div class="examples-label">Real-World Examples</div>
-          <div class="examples-grid">
+          <div class="examples-grid-3col">
             <div class="example-card">
               <div class="example-product">💼 LinkedIn</div>
               <span class="example-technique" style="background:#3B82F6">Progress Bar</span>
-              <p class="example-body">Profile strength % with specific next steps. Users feel incomplete until they reach "All-Star" status.</p>
+              <p class="example-body">Profile strength % with specific next steps keeps users returning until "All-Star" status.</p>
             </div>
             <div class="example-card">
               <div class="example-product">🐙 GitHub</div>
-              <span class="example-technique" style="background:#3B82F6">Streak / Contribution Graph</span>
-              <p class="example-body">The annual contribution heatmap becomes a public record of consistency developers are proud to maintain.</p>
+              <span class="example-technique" style="background:#3B82F6">Contribution Graph</span>
+              <p class="example-body">The annual heatmap becomes a public record of consistency — developers feel pride maintaining it.</p>
             </div>
             <div class="example-card">
               <div class="example-product">🦜 Duolingo</div>
-              <span class="example-technique" style="background:#3B82F6">XP + Leaderboard</span>
-              <p class="example-body">Weekly league standings create social benchmarking — you can always see exactly who you're competing with.</p>
+              <span class="example-technique" style="background:#3B82F6">XP + Leagues</span>
+              <p class="example-body">Weekly league standings create social benchmarking — you can see who you're competing with.</p>
             </div>
             <div class="example-card">
-              <div class="example-product">🏃 Strava / Fitness Apps</div>
+              <div class="example-product">🏃 Strava</div>
               <span class="example-technique" style="background:#3B82F6">Milestone Badges</span>
               <p class="example-body">First 5K, personal best, 100-mile club — each milestone provides a sense of earned achievement.</p>
             </div>
+            <div class="example-card">
+              <div class="example-product">🎮 Xbox / Steam</div>
+              <span class="example-technique" style="background:#3B82F6">Achievement System</span>
+              <p class="example-body">Unlockable trophies extend game value — players return for 100% completion runs.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">📚 Khan Academy</div>
+              <span class="example-technique" style="background:#3B82F6">Mastery Bars</span>
+              <p class="example-body">Colour-coded skill mastery (practiced → familiar → proficient → mastered) makes learning visible.</p>
+            </div>
           </div>
-          <div class="examples-label">Techniques</div>
+          <div class="examples-label">Technique UI Examples</div>
+          <div class="ui-demos-row">
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Progress Bar</div>
+              <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#6b7280;margin-bottom:3px"><span>Level 3</span><span style="color:#3B82F6">680 / 1000 XP</span></div>
+              <div style="height:7px;background:#21262d;border-radius:4px"><div style="width:68%;height:100%;background:linear-gradient(90deg,#3B82F6,#8B5CF6);border-radius:4px;box-shadow:0 0 6px rgba(59,130,246,.5)"></div></div>
+              <div style="font-size:.62rem;color:#6b7280;margin-top:4px">Next reward: 320 XP away</div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Badge Achievement</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:1.2rem;box-shadow:0 0 12px rgba(59,130,246,.4)">🎨</div>
+                <div>
+                  <div style="font-size:.72rem;font-weight:700;color:#e6edf3">Level Up!</div>
+                  <div style="font-size:.62rem;color:#6b7280">You reached Level 4 · Explorer</div>
+                  <div style="font-size:.6rem;color:#3B82F6;margin-top:2px">+1 new skill unlocked</div>
+                </div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Quest List</div>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <div style="display:flex;align-items:center;gap:5px;font-size:.7rem">
+                  <div style="width:14px;height:14px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:#fff;flex-shrink:0">✓</div>
+                  <span style="color:#6b7280;text-decoration:line-through">Complete profile</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:.7rem">
+                  <div style="width:14px;height:14px;border-radius:50%;border:1.5px solid #3B82F6;flex-shrink:0"></div>
+                  <span style="color:#e6edf3;font-weight:600">Make first post</span>
+                  <span style="margin-left:auto;color:#3B82F6;font-size:.6rem">+60 XP</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:.7rem">
+                  <div style="width:14px;height:14px;border-radius:50%;border:1.5px solid #30363d;flex-shrink:0"></div>
+                  <span style="color:#6b7280">Get 10 followers</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="examples-label">All Techniques</div>
           <div class="techniques-row">
-            <span class="technique-chip">Points &amp; XP</span>
-            <span class="technique-chip">Badges &amp; trophies</span>
-            <span class="technique-chip">Leaderboards</span>
-            <span class="technique-chip">Progress bars</span>
-            <span class="technique-chip">Achievement unlocks</span>
-            <span class="technique-chip">Level-up ceremonies</span>
+            <span class="technique-chip">Points</span>
+            <span class="technique-chip">Badges</span>
+            <span class="technique-chip">Leaderboard</span>
+            <span class="technique-chip">Progress Bar</span>
+            <span class="technique-chip">Quest Lists</span>
+            <span class="technique-chip">Boss Fights</span>
+            <span class="technique-chip">Certificates</span>
+            <span class="technique-chip">High-Five</span>
+            <span class="technique-chip">Achievement Symbols</span>
           </div>
           <div class="designer-tip" style="border-color:#3B82F6">
             <div class="tip-label" style="color:#1E40AF">💡 Designer Tip</div>
@@ -611,36 +729,84 @@
         <div class="drive-body">
           <p class="drive-desc">Engaging users in a creative process where they can repeatedly figure things out, try different combinations, and see the results of their choices in real time. The feedback loop is essential — creativity without feedback feels meaningless.</p>
           <div class="examples-label">Real-World Examples</div>
-          <div class="examples-grid">
+          <div class="examples-grid-3col">
             <div class="example-card">
-              <div class="example-product">⛏️ Minecraft</div>
-              <span class="example-technique" style="background:#8B5CF6">Open World Creation</span>
-              <p class="example-body">No instructions, no goals — pure creative freedom with infinite combinations. The world is the feedback.</p>
+              <div class="example-product">🏗️ Minecraft</div>
+              <span class="example-technique" style="background:#8B5CF6">Build From Scratch</span>
+              <p class="example-body">Unlimited materials, no objectives — pure expression. Players spend hundreds of hours building things no one asked for.</p>
             </div>
             <div class="example-card">
-              <div class="example-product">🎨 Canva</div>
-              <span class="example-technique" style="background:#8B5CF6">Constrained Creativity</span>
-              <p class="example-body">Templates create guardrails so users feel capable — then they can break the rules once confident.</p>
+              <div class="example-product">🎨 Figma / Canva</div>
+              <span class="example-technique" style="background:#8B5CF6">Instant Feedback</span>
+              <p class="example-body">Real-time preview of every design change creates a tight creative loop — you see results immediately.</p>
             </div>
             <div class="example-card">
-              <div class="example-product">🎵 TikTok</div>
-              <span class="example-technique" style="background:#8B5CF6">Remix &amp; Effects</span>
-              <p class="example-body">Sounds, filters, and transitions make creation accessible. "Duet" enables collaboration within constraints.</p>
+              <div class="example-product">🎮 Roblox</div>
+              <span class="example-technique" style="background:#8B5CF6">Co-Creator Tools</span>
+              <p class="example-body">Players build games for other players. The platform provides tools; the users create the content.</p>
             </div>
             <div class="example-card">
-              <div class="example-product">🧩 LEGO</div>
-              <span class="example-technique" style="background:#8B5CF6">Structured Freedom</span>
-              <p class="example-body">Instructions provide a starting point, but the real value is building your own version — the "set" becomes raw material.</p>
+              <div class="example-product">🎵 TikTok Duet</div>
+              <span class="example-technique" style="background:#8B5CF6">Attribute Combo</span>
+              <p class="example-body">Duet and stitch features layer creativity on top of existing content — new combos emerge from old material.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">📊 Notion</div>
+              <span class="example-technique" style="background:#8B5CF6">Choice Perception</span>
+              <p class="example-body">Endless template and block combinations give users the feeling they designed their own system.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">💻 StackOverflow</div>
+              <span class="example-technique" style="background:#8B5CF6">Instant Feedback</span>
+              <p class="example-body">Upvotes and accepted answers give immediate signal on the quality of creative problem-solving.</p>
             </div>
           </div>
-          <div class="examples-label">Techniques</div>
+          <div class="examples-label">Technique UI Examples</div>
+          <div class="ui-demos-row">
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Combo Builder</div>
+              <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px">
+                <span style="font-size:.62rem;padding:2px 7px;border-radius:10px;background:#1a0d3f;color:#a78bfa;border:1px solid #8B5CF6">Streak</span>
+                <span style="font-size:.62rem;padding:2px 7px;border-radius:10px;background:#1a0d3f;color:#a78bfa;border:1px solid #8B5CF6">Badge</span>
+                <span style="font-size:.62rem;padding:2px 7px;border-radius:10px;background:#161b22;color:#6b7280;border:1px solid #30363d">Timer</span>
+              </div>
+              <div style="background:#0d1117;border-radius:6px;padding:5px 7px;border-left:2px solid #8B5CF6">
+                <div style="font-size:.62rem;font-weight:700;color:#a78bfa">The Habit Loop</div>
+                <div style="font-size:.58rem;color:#6b7280">Daily momentum builds automatic behaviour</div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Live Preview</div>
+              <div style="background:#0a0a0a;border-radius:6px;padding:8px;border:1px solid #30363d;text-align:center">
+                <div style="font-size:.65rem;color:#8B5CF6;font-weight:700">Preview</div>
+                <div style="font-size:.75rem;color:#e6edf3;margin-top:3px">Design updates instantly</div>
+                <div style="height:3px;background:linear-gradient(90deg,#8B5CF6,#EC4899);border-radius:2px;margin-top:6px"></div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Feedback Loop</div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="background:#0d2e1a;border-radius:6px;padding:5px 8px;border:1px solid #16a34a;flex:1">
+                  <div style="font-size:.6rem;font-weight:700;color:#4ade80">✓ Valid</div>
+                  <div style="font-size:.58rem;color:#6b7280">Score: 94/100</div>
+                </div>
+                <div style="font-size:.7rem;color:#8B5CF6">→</div>
+                <div style="background:#0a1520;border-radius:6px;padding:5px 8px;border:1px solid #3B82F6;flex:1">
+                  <div style="font-size:.6rem;font-weight:700;color:#60a5fa">Next tip</div>
+                  <div style="font-size:.58rem;color:#6b7280">Try adding contrast</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="examples-label">All Techniques</div>
           <div class="techniques-row">
-            <span class="technique-chip">Milestone unlocks</span>
+            <span class="technique-chip">Milestone Unlocks</span>
+            <span class="technique-chip">Choice Perception</span>
+            <span class="technique-chip">Instant Feedback</span>
             <span class="technique-chip">Boosters</span>
-            <span class="technique-chip">Meaningful choices</span>
-            <span class="technique-chip">Real-time feedback</span>
-            <span class="technique-chip">User-generated content</span>
-            <span class="technique-chip">Combo discovery</span>
+            <span class="technique-chip">Plant &amp; Predict</span>
+            <span class="technique-chip">Attribute Combo</span>
+            <span class="technique-chip">Build From Scratch</span>
           </div>
           <div class="designer-tip" style="border-color:#8B5CF6">
             <div class="tip-label" style="color:#4C1D95">💡 Designer Tip</div>
@@ -665,36 +831,76 @@
         <div class="drive-body">
           <p class="drive-desc">Users are motivated because they feel they own something. The more they personalize, invest in, and customize something, the more attached they become. Ownership also triggers the desire to grow and protect what they have.</p>
           <div class="examples-label">Real-World Examples</div>
-          <div class="examples-grid">
+          <div class="examples-grid-3col">
             <div class="example-card">
-              <div class="example-product">⚡ Pokémon</div>
+              <div class="example-product">🏠 Animal Crossing</div>
+              <span class="example-technique" style="background:#10B981">Virtual Goods</span>
+              <p class="example-body">Players spend real hours decorating homes with in-game furniture. The island is "yours" in every way that matters.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">🎴 Pokémon</div>
               <span class="example-technique" style="background:#10B981">Collection Set</span>
-              <p class="example-body">"Gotta catch 'em all" is the archetypal ownership drive — incompleteness is felt as a loss.</p>
+              <p class="example-body">"Gotta catch 'em all" — the desire to complete a collection drives decades of engagement across generations.</p>
             </div>
             <div class="example-card">
-              <div class="example-product">🐦 Twitter / X</div>
-              <span class="example-technique" style="background:#10B981">Status Ownership</span>
-              <p class="example-body">Verification checkmarks became identity markers — their removal felt like losing property, not a subscription.</p>
+              <div class="example-product">💰 Robux / V-Bucks</div>
+              <span class="example-technique" style="background:#10B981">Virtual Currency</span>
+              <p class="example-body">Converting real money to game currency creates psychological distance from spending — and a desire to accumulate.</p>
             </div>
             <div class="example-card">
-              <div class="example-product">🛍️ Amazon</div>
-              <span class="example-technique" style="background:#10B981">Wishlist / Territory</span>
-              <p class="example-body">Wishlists create curated personal stores. Users maintain and revisit them because they feel like possessions.</p>
+              <div class="example-product">📝 Notion Workspace</div>
+              <span class="example-technique" style="background:#10B981">Alfred Effect</span>
+              <p class="example-body">A system you built yourself feels like an extension of your mind — switching tools means losing yourself.</p>
             </div>
             <div class="example-card">
-              <div class="example-product">🎮 RPG Games</div>
-              <span class="example-technique" style="background:#10B981">Avatar Customization</span>
-              <p class="example-body">Character customization creates identity attachment — players defend "their" character as if it were themselves.</p>
+              <div class="example-product">🐾 Tamagotchi</div>
+              <span class="example-technique" style="background:#10B981">Protection &amp; Preservation</span>
+              <p class="example-body">You own this creature — and feel responsible for its survival. Neglect creates real guilt.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">🏰 Clash of Clans</div>
+              <span class="example-technique" style="background:#10B981">Territory Takeover</span>
+              <p class="example-body">Your base is your territory. Defending it against raids triggers deep ownership instincts.</p>
             </div>
           </div>
-          <div class="examples-label">Techniques</div>
+          <div class="examples-label">Technique UI Examples</div>
+          <div class="ui-demos-row">
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Passport Stamps</div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">
+                <div style="aspect-ratio:1;border-radius:6px;background:color-mix(in srgb,#F59E0B 15%,#0d1117);border:1.5px solid #F59E0B;display:flex;align-items:center;justify-content:center;font-size:.85rem;box-shadow:0 0 6px rgba(245,158,11,.3)">🌐</div>
+                <div style="aspect-ratio:1;border-radius:6px;background:color-mix(in srgb,#3B82F6 15%,#0d1117);border:1.5px solid #3B82F6;display:flex;align-items:center;justify-content:center;font-size:.85rem;box-shadow:0 0 6px rgba(59,130,246,.3)">🏆</div>
+                <div style="aspect-ratio:1;border-radius:6px;border:1.5px dashed #30363d;display:flex;align-items:center;justify-content:center;font-size:.85rem;opacity:.35">🧩</div>
+                <div style="aspect-ratio:1;border-radius:6px;border:1.5px dashed #30363d;display:flex;align-items:center;justify-content:center;font-size:.85rem;opacity:.35">📦</div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Virtual Currency</div>
+              <div style="text-align:center;padding:4px 0">
+                <div style="font-size:1.4rem;font-weight:900;color:#10B981">⭐ 4,820</div>
+                <div style="font-size:.62rem;color:#6b7280">Coins · this month</div>
+                <div style="font-size:.6rem;color:#10B981;margin-top:3px">+120 earned today</div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Collection Set</div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">
+                <div style="aspect-ratio:1;border-radius:6px;background:#0d2a1a;border:1px solid #10B981;display:flex;align-items:center;justify-content:center;font-size:.75rem">🏆</div>
+                <div style="aspect-ratio:1;border-radius:6px;background:#0d2a1a;border:1px solid #10B981;display:flex;align-items:center;justify-content:center;font-size:.75rem">⭐</div>
+                <div style="aspect-ratio:1;border-radius:6px;background:#0d2a1a;border:1px solid #10B981;display:flex;align-items:center;justify-content:center;font-size:.75rem">🎯</div>
+                <div style="aspect-ratio:1;border-radius:6px;background:#0d1117;border:1px dashed #30363d;display:flex;align-items:center;justify-content:center;font-size:.75rem;opacity:.4">🔒</div>
+              </div>
+            </div>
+          </div>
+          <div class="examples-label">All Techniques</div>
           <div class="techniques-row">
-            <span class="technique-chip">Virtual goods</span>
-            <span class="technique-chip">Collection mechanics</span>
-            <span class="technique-chip">Building a territory</span>
-            <span class="technique-chip">Avatar customization</span>
-            <span class="technique-chip">Personal dashboard</span>
-            <span class="technique-chip">Naming / labeling</span>
+            <span class="technique-chip">Virtual Goods</span>
+            <span class="technique-chip">Virtual Currency</span>
+            <span class="technique-chip">Build to Give</span>
+            <span class="technique-chip">Collection Set</span>
+            <span class="technique-chip">Protection &amp; Preservation</span>
+            <span class="technique-chip">Territory Takeover</span>
+            <span class="technique-chip">Alfred Effect</span>
           </div>
           <div class="designer-tip" style="border-color:#10B981">
             <div class="tip-label" style="color:#064E3B">💡 Designer Tip</div>
@@ -719,11 +925,11 @@
         <div class="drive-body">
           <p class="drive-desc">Everything social — mentorship, competition, envy, friendship, and belonging. Humans are wired to compare themselves to others and want to be part of a group. Even passive social signals (like a view counter) change behavior.</p>
           <div class="examples-label">Real-World Examples</div>
-          <div class="examples-grid">
+          <div class="examples-grid-3col">
             <div class="example-card">
               <div class="example-product">👍 Facebook Reactions</div>
               <span class="example-technique" style="background:#EC4899">Social Validation</span>
-              <p class="example-body">Likes create variable validation loops. The question "will people react?" drives posting behavior more than the content itself.</p>
+              <p class="example-body">Likes create variable validation loops. "Will people react?" drives posting behavior more than the content itself.</p>
             </div>
             <div class="example-card">
               <div class="example-product">💼 LinkedIn Endorsements</div>
@@ -740,15 +946,56 @@
               <span class="example-technique" style="background:#EC4899">Social Gifting</span>
               <p class="example-body">Giving a friend a discount feels generous — the referrer gains social capital, not just monetary reward.</p>
             </div>
+            <div class="example-card">
+              <div class="example-product">🟣 Twitch Bits</div>
+              <span class="example-technique" style="background:#EC4899">Social Treasury</span>
+              <p class="example-body">Cheering with Bits is visible to the entire stream. The public act of giving creates status for the giver.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">🏅 Discord Roles</div>
+              <span class="example-technique" style="background:#EC4899">Totem / Trophy</span>
+              <p class="example-body">Custom roles and colored names publicly signal your standing within the community — a visible social totem.</p>
+            </div>
           </div>
-          <div class="examples-label">Techniques</div>
+          <div class="examples-label">Technique UI Examples</div>
+          <div class="ui-demos-row">
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Activity Feed</div>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <div style="font-size:.62rem;color:#8b949e;background:#0d1117;border-radius:5px;padding:5px 7px">🎨 Alex earned Level 4 · 2m ago</div>
+                <div style="font-size:.62rem;color:#8b949e;background:#0d1117;border-radius:5px;padding:5px 7px">💻 Sam joined the team · 5m ago</div>
+                <div style="font-size:.62rem;color:#8b949e;background:#0d1117;border-radius:5px;padding:5px 7px">🌍 12 people online now</div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Social Proof</div>
+              <div>
+                <div style="display:flex;gap:-4px;margin-bottom:5px">
+                  <div style="width:22px;height:22px;border-radius:50%;background:#EC4899;border:2px solid #161b22;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700">A</div>
+                  <div style="width:22px;height:22px;border-radius:50%;background:#3B82F6;border:2px solid #161b22;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;margin-left:-6px">S</div>
+                  <div style="width:22px;height:22px;border-radius:50%;background:#8B5CF6;border:2px solid #161b22;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;margin-left:-6px">M</div>
+                </div>
+                <div style="font-size:.7rem;color:#e6edf3">14 teammates already use this</div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Group Quest</div>
+              <div>
+                <div style="font-size:.62rem;color:#6b7280;margin-bottom:4px">Team Sprint — 3/5 tasks done</div>
+                <div style="height:5px;background:#21262d;border-radius:3px;overflow:hidden;margin-bottom:5px"><div style="width:60%;height:100%;background:#EC4899;border-radius:3px"></div></div>
+                <div style="font-size:.62rem;color:#EC4899">2 tasks to unlock team reward</div>
+              </div>
+            </div>
+          </div>
+          <div class="examples-label">All Techniques</div>
           <div class="techniques-row">
-            <span class="technique-chip">Social proof</span>
-            <span class="technique-chip">Gifting / sharing</span>
-            <span class="technique-chip">Mentorship system</span>
-            <span class="technique-chip">Group quests</span>
-            <span class="technique-chip">Social leaderboard</span>
-            <span class="technique-chip">Water-cooler chat</span>
+            <span class="technique-chip">Social Treasure / Gifting</span>
+            <span class="technique-chip">Friending</span>
+            <span class="technique-chip">Conformity Anchor</span>
+            <span class="technique-chip">Group Quest</span>
+            <span class="technique-chip">Social Prod</span>
+            <span class="technique-chip">Mentorship</span>
+            <span class="technique-chip">Totem / Trophy Shelf</span>
           </div>
           <div class="designer-tip" style="border-color:#EC4899">
             <div class="tip-label" style="color:#831843">💡 Designer Tip</div>
@@ -773,7 +1020,7 @@
         <div class="drive-body">
           <p class="drive-desc">Wanting something because you can't have it yet, or because it might disappear. Rarity and exclusivity make things desirable. The "Black Hat" label means this drive creates urgency but can generate anxiety — use carefully.</p>
           <div class="examples-label">Real-World Examples</div>
-          <div class="examples-grid">
+          <div class="examples-grid-3col">
             <div class="example-card">
               <div class="example-product">👻 Snapchat Stories</div>
               <span class="example-technique" style="background:#F97316">Disappearing Content</span>
@@ -782,7 +1029,7 @@
             <div class="example-card">
               <div class="example-product">🌾 Farmville / Hay Day</div>
               <span class="example-technique" style="background:#F97316">Appointment Dynamics</span>
-              <p class="example-body">Crops that die if not harvested in time force players to return at specific intervals — or pay to skip.</p>
+              <p class="example-body">Crops that die if not harvested on time force players to return at specific intervals — or pay to skip.</p>
             </div>
             <div class="example-card">
               <div class="example-product">✉️ Gmail Beta (2004)</div>
@@ -794,15 +1041,59 @@
               <span class="example-technique" style="background:#F97316">Time-Limited Access</span>
               <p class="example-body">"Only 3 left" + countdown timer combines scarcity and time pressure into a powerful purchase trigger.</p>
             </div>
+            <div class="example-card">
+              <div class="example-product">🏨 Booking.com</div>
+              <span class="example-technique" style="background:#F97316">Magnetic Cap</span>
+              <p class="example-body">"Only 2 rooms left at this price" combines real scarcity with social proof to create urgency.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">👟 Supreme Drops</div>
+              <span class="example-technique" style="background:#F97316">Last Mile Drive</span>
+              <p class="example-body">Weekly limited drops sell out in seconds. Scarcity itself becomes the product's primary selling point.</p>
+            </div>
           </div>
-          <div class="examples-label">Techniques</div>
+          <div class="examples-label">Technique UI Examples</div>
+          <div class="ui-demos-row">
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Countdown Timer</div>
+              <div style="text-align:center;padding:4px 0">
+                <div style="font-size:1.6rem;font-weight:900;color:#F97316;letter-spacing:-.02em">23:47:12</div>
+                <div style="font-size:.62rem;color:#6b7280">Offer ends soon</div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Seat Availability</div>
+              <div>
+                <div style="display:flex;gap:5px;margin-bottom:5px">
+                  <div style="width:16px;height:16px;border-radius:50%;background:#F97316;border:1.5px solid #ea580c"></div>
+                  <div style="width:16px;height:16px;border-radius:50%;background:#F97316;border:1.5px solid #ea580c"></div>
+                  <div style="width:16px;height:16px;border-radius:50%;background:#F97316;border:1.5px solid #ea580c"></div>
+                  <div style="width:16px;height:16px;border-radius:50%;border:1.5px dashed #30363d;background:#0d1117"></div>
+                  <div style="width:16px;height:16px;border-radius:50%;border:1.5px dashed #30363d;background:#0d1117"></div>
+                </div>
+                <div style="font-size:.62rem;color:#F97316">2 seats remain</div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Appointment Dynamic</div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="font-size:1.1rem">🌽</div>
+                <div>
+                  <div style="font-size:.65rem;font-weight:700;color:#e6edf3">Ready in 4h 12m</div>
+                  <div style="height:3px;background:#21262d;border-radius:2px;margin-top:3px;overflow:hidden"><div style="width:72%;height:100%;background:#F97316;border-radius:2px"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="examples-label">All Techniques</div>
           <div class="techniques-row">
-            <span class="technique-chip">Appointment dynamics</span>
-            <span class="technique-chip">Torture breaks</span>
-            <span class="technique-chip">Exclusive access</span>
-            <span class="technique-chip">Countdown timers</span>
-            <span class="technique-chip">Moats / waiting lists</span>
-            <span class="technique-chip">The dangling carrot</span>
+            <span class="technique-chip">Dangling / Dangling Carrot</span>
+            <span class="technique-chip">Appointment Dynamics</span>
+            <span class="technique-chip">Fixed Intervals</span>
+            <span class="technique-chip">Lottery</span>
+            <span class="technique-chip">Morning Star Bonus</span>
+            <span class="technique-chip">Last Mile Drive</span>
+            <span class="technique-chip">Magnetic Cap</span>
           </div>
           <div class="designer-tip" style="border-color:#F97316">
             <div class="tip-label" style="color:#7C2D12">💡 Designer Tip</div>
@@ -827,7 +1118,7 @@
         <div class="drive-body">
           <p class="drive-desc">Not knowing what happens next keeps the brain engaged. The dopamine spike from an unexpected reward is larger than from a predictable one. This is the mechanism behind gambling — and also behind great storytelling.</p>
           <div class="examples-label">Real-World Examples</div>
-          <div class="examples-grid">
+          <div class="examples-grid-3col">
             <div class="example-card">
               <div class="example-product">🎰 Loot Boxes / Gacha</div>
               <span class="example-technique" style="background:#06B6D4">Variable Reward</span>
@@ -840,7 +1131,7 @@
             </div>
             <div class="example-card">
               <div class="example-product">🎵 Spotify Discover Weekly</div>
-              <span class="example-technique" style="background:#06B6D4">Curious Discovery</span>
+              <span class="example-technique" style="background:#06B6D4">Rolling Rewards</span>
               <p class="example-body">A personalized playlist that changes weekly — the anticipation of Monday's discovery creates habitual check-ins.</p>
             </div>
             <div class="example-card">
@@ -848,15 +1139,53 @@
               <span class="example-technique" style="background:#06B6D4">Randomized Reward</span>
               <p class="example-body">Not knowing what's inside is more compelling than the contents. The unboxing is the product.</p>
             </div>
+            <div class="example-card">
+              <div class="example-product">🟩 Wordle</div>
+              <span class="example-technique" style="background:#06B6D4">Glowing Choice</span>
+              <p class="example-body">Each guess reveals partial information — the mystery of the unknown word creates irresistible daily pull.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">🎁 Blind Box Toys</div>
+              <span class="example-technique" style="background:#06B6D4">Easter Eggs</span>
+              <p class="example-body">Hidden rare figures in blind box series create obsessive collecting to find the secret variant.</p>
+            </div>
           </div>
-          <div class="examples-label">Techniques</div>
+          <div class="examples-label">Technique UI Examples</div>
+          <div class="ui-demos-row">
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Scratch Card</div>
+              <div style="background:repeating-linear-gradient(45deg,#21262d,#21262d 3px,#1c2129 3px,#1c2129 6px);border-radius:8px;padding:12px;text-align:center;position:relative">
+                <div style="font-size:1.2rem">🪙</div>
+                <div style="font-size:.62rem;color:#8b949e;margin-top:3px">Scratch to reveal</div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Random Reward</div>
+              <div style="text-align:center;padding:4px 0">
+                <div style="font-size:1.4rem;margin-bottom:4px">🎲</div>
+                <div style="font-size:.65rem;font-weight:700;color:#06B6D4">Variable Reward</div>
+                <div style="font-size:.58rem;color:#6b7280;margin-top:2px">Could be 10x, 1x, or 0.5x</div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Easter Egg</div>
+              <div style="position:relative;height:50px;background:#0d1117;border-radius:6px;border:1px solid #21262d">
+                <div style="position:absolute;bottom:4px;right:6px;font-size:.85rem;opacity:.4">🥚</div>
+                <div style="font-size:.62rem;color:#8b949e;padding:5px 7px">Regular content</div>
+                <div style="font-size:.55rem;color:#06B6D4;padding:0 7px">You found a hidden feature! ✨</div>
+              </div>
+            </div>
+          </div>
+          <div class="examples-label">All Techniques</div>
           <div class="techniques-row">
-            <span class="technique-chip">Variable rewards</span>
-            <span class="technique-chip">Easter eggs</span>
-            <span class="technique-chip">Glowing choice</span>
-            <span class="technique-chip">Mini-games</span>
-            <span class="technique-chip">Sudden rewards</span>
-            <span class="technique-chip">Narrative mystery</span>
+            <span class="technique-chip">Glowing Choice</span>
+            <span class="technique-chip">Mini Quests</span>
+            <span class="technique-chip">Visual Storytelling</span>
+            <span class="technique-chip">Easter Eggs</span>
+            <span class="technique-chip">Random Rewards</span>
+            <span class="technique-chip">Rolling Rewards</span>
+            <span class="technique-chip">Sudden Rewards</span>
+            <span class="technique-chip">Evolved UI</span>
           </div>
           <div class="designer-tip" style="border-color:#06B6D4">
             <div class="tip-label" style="color:#0E7490">💡 Designer Tip</div>
@@ -881,36 +1210,75 @@
         <div class="drive-body">
           <p class="drive-desc">Avoiding negative outcomes. Fear of losing prior progress, missing an opportunity, or breaking a streak is a powerful motivator — often stronger than gaining something equivalent. This is the most psychologically potent (and risky) drive.</p>
           <div class="examples-label">Real-World Examples</div>
-          <div class="examples-grid">
+          <div class="examples-grid-3col">
             <div class="example-card">
-              <div class="example-product">🦜 Duolingo</div>
-              <span class="example-technique" style="background:#EF4444">Streak Loss</span>
-              <p class="example-body">"You're about to lose your 47-day streak!" is Duolingo's most powerful notification. Progress loss triggers immediate action.</p>
+              <div class="example-product">🦜 Duolingo Streak</div>
+              <span class="example-technique" style="background:#EF4444">Streaks</span>
+              <p class="example-body">Losing a 200-day streak feels catastrophic. The fear of loss motivates daily sessions more than the desire to learn.</p>
             </div>
             <div class="example-card">
-              <div class="example-product">💼 LinkedIn</div>
+              <div class="example-product">👻 Snapchat Streak</div>
+              <span class="example-technique" style="background:#EF4444">Progress Loss</span>
+              <p class="example-body">The snap streak counter creates a mutual obligation — letting it die means failing a social contract.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">💼 LinkedIn Views Drop</div>
+              <span class="example-technique" style="background:#EF4444">FOMO Punch</span>
+              <p class="example-body">"Your profile views dropped 18%" — even if the absolute number is small, decline creates anxiety about lost opportunity.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">🌾 Farmville Crops</div>
+              <span class="example-technique" style="background:#EF4444">Sunk Cost Prison</span>
+              <p class="example-body">After investing hours planting, players feel compelled to log in — abandoning the crops means the effort was wasted.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">💳 Premium Expiry</div>
+              <span class="example-technique" style="background:#EF4444">Rightful Heritage</span>
+              <p class="example-body">"Your premium features expire in 3 days" — losing access to something you got used to feels like a downgrade.</p>
+            </div>
+            <div class="example-card">
+              <div class="example-product">🎰 Casino Near-Miss</div>
               <span class="example-technique" style="background:#EF4444">Status Quo Sloth</span>
-              <p class="example-body">Profile incompleteness warnings make users feel their professional credibility is being eroded by inaction.</p>
-            </div>
-            <div class="example-card">
-              <div class="example-product">🛒 E-commerce</div>
-              <span class="example-technique" style="background:#EF4444">Cart Expiry</span>
-              <p class="example-body">"Your cart is about to expire" — the threat of losing saved items (and the effort of finding them again) drives purchase.</p>
-            </div>
-            <div class="example-card">
-              <div class="example-product">📧 Email Unsubscribe</div>
-              <span class="example-technique" style="background:#EF4444">FOMO Warning</span>
-              <p class="example-body">"If you unsubscribe, you'll miss our next exclusive deal." Loss framing outperforms benefit framing in most tests.</p>
+              <p class="example-body">A near-win feels like a near-loss that must be corrected — not leaving "on a loss" keeps players spinning.</p>
             </div>
           </div>
-          <div class="examples-label">Techniques</div>
+          <div class="examples-label">Technique UI Examples</div>
+          <div class="ui-demos-row">
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Streak Tracker</div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:1.4rem">🔥</span>
+                <div>
+                  <div style="font-size:.95rem;font-weight:900;color:#EF4444">5 day streak</div>
+                  <div style="background:#450a0a;border-radius:4px;padding:2px 6px;font-size:.58rem;color:#fca5a5;margin-top:2px">⚠️ At risk today</div>
+                </div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">Progress Loss Warning</div>
+              <div>
+                <div style="font-size:.62rem;color:#EF4444;font-weight:700;margin-bottom:4px">⚠️ Your level drops in 3 days</div>
+                <div style="height:5px;background:#21262d;border-radius:3px;overflow:hidden"><div style="width:20%;height:100%;background:#EF4444;border-radius:3px;box-shadow:0 0 5px rgba(239,68,68,.5)"></div></div>
+                <div style="font-size:.58rem;color:#6b7280;margin-top:3px">Login streak required to maintain Expert</div>
+              </div>
+            </div>
+            <div class="ui-demo-panel">
+              <div class="ui-demo-label">FOMO Counter</div>
+              <div style="background:#0d1117;border-radius:6px;padding:7px;border-left:2px solid #EF4444">
+                <div style="font-size:.65rem;font-weight:700;color:#fca5a5">🔔 47 profile views this week</div>
+                <div style="font-size:.58rem;color:#EF4444;margin-top:2px">↓ 18% from last week</div>
+              </div>
+            </div>
+          </div>
+          <div class="examples-label">All Techniques</div>
           <div class="techniques-row">
-            <span class="technique-chip">Sunk cost pity</span>
-            <span class="technique-chip">Progress loss warning</span>
-            <span class="technique-chip">Streak protection</span>
-            <span class="technique-chip">Sisyphean enemy</span>
-            <span class="technique-chip">Status quo sloth</span>
-            <span class="technique-chip">Countdown timer</span>
+            <span class="technique-chip">Progress Loss</span>
+            <span class="technique-chip">Status Quo Sloth</span>
+            <span class="technique-chip">Sunk Cost Prison</span>
+            <span class="technique-chip">Rightful Heritage</span>
+            <span class="technique-chip">Countdown Timer</span>
+            <span class="technique-chip">FOMO Punch</span>
+            <span class="technique-chip">Streaks</span>
           </div>
           <div class="designer-tip" style="border-color:#EF4444">
             <div class="tip-label" style="color:#7F1D1D">💡 Designer Tip</div>
