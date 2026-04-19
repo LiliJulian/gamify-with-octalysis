@@ -323,66 +323,6 @@
       margin-bottom: 40px;
     }
 
-    /* ── HAT SECTION ─────────────────────────────────────── */
-    .hat-section {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .hat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-    .hat-col { border-radius: 16px; padding: 32px; }
-    .hat-col.white { background: var(--white-hat-l); border: 1.5px solid #86EFAC; }
-    .hat-col.black { background: #F9FAFB; border: 1.5px solid #D1D5DB; }
-    .hat-col h3 {
-      font-size: 1.15rem;
-      font-weight: 800;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .hat-col p { font-size: .9rem; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
-    .hat-drives { display: flex; flex-wrap: wrap; gap: 8px; }
-    .hat-drive-chip {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: .82rem;
-      font-weight: 700;
-      color: white;
-    }
-    .hat-col.white .hat-note { font-size: .82rem; color: var(--white-hat); font-weight: 600; margin-top: 14px; }
-    .hat-col.black .hat-note { font-size: .82rem; color: #374151; font-weight: 600; margin-top: 14px; }
-
-    /* ── BRAIN SECTION ───────────────────────────────────── */
-    .brain-section { padding: 64px 24px; max-width: 1200px; margin: 0 auto; }
-    .brain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-    .brain-col { border-radius: 16px; padding: 32px; border: 1.5px solid; }
-    .brain-col.left { background: #EFF6FF; border-color: #BFDBFE; }
-    .brain-col.right { background: #F5F3FF; border-color: #DDD6FE; }
-    .brain-col h3 {
-      font-size: 1.15rem;
-      font-weight: 800;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .brain-col p { font-size: .9rem; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
-    .brain-drives { display: flex; flex-wrap: wrap; gap: 8px; }
-    .brain-drive-chip {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: .82rem;
-      font-weight: 700;
-      color: white;
-    }
-
     /* ── APPLY SECTION ───────────────────────────────────── */
     .apply-section { background: var(--surface); border-top: 1px solid var(--border); }
     .apply-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -474,7 +414,7 @@
       .explorer-wrap { grid-template-columns: 1fr; }
       .explorer-sticky { position: static; }
       .examples-grid { grid-template-columns: 1fr; }
-      .hat-grid, .brain-grid, .apply-steps, .about-grid { grid-template-columns: 1fr; }
+      .apply-steps, .about-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -990,71 +930,6 @@
       </div>
     </div>
   </div><!-- /explorer-wrap -->
-
-  <!-- ── HAT SECTION ─────────────────────────────────────── -->
-  <hr class="section-divider">
-  <section class="hat-section" id="hats">
-    <div class="section" style="padding-top:56px;padding-bottom:56px;">
-      <div class="section-label">Framework Axis</div>
-      <div class="section-title">White Hat vs Black Hat</div>
-      <p class="section-sub">Every Core Drive falls on a spectrum from intrinsically motivating to externally pressuring. Understanding this axis helps you build systems that feel great, not coercive.</p>
-      <div class="hat-grid">
-        <div class="hat-col white">
-          <h3>⬜ White Hat Drives</h3>
-          <p>White Hat drives make users feel powerful, fulfilled, and creative. They generate long-term engagement because the user <em>wants</em> to be there. High White Hat = users evangelize and recommend.</p>
-          <div class="hat-drives">
-            <span class="hat-drive-chip" style="background:#F59E0B">🌟 CD1 Epic Meaning</span>
-            <span class="hat-drive-chip" style="background:#3B82F6">🏆 CD2 Accomplishment</span>
-            <span class="hat-drive-chip" style="background:#8B5CF6">🎨 CD3 Creativity</span>
-            <span class="hat-drive-chip" style="background:#10B981">💎 CD4 Ownership</span>
-            <span class="hat-drive-chip" style="background:#EC4899">👥 CD5 Social</span>
-          </div>
-          <p class="hat-note">✅ Sustainable engagement — users keep coming back because it feels good, not because they're afraid to stop.</p>
-        </div>
-        <div class="hat-col black">
-          <h3>⬛ Black Hat Drives</h3>
-          <p>Black Hat drives create urgency and anxiety. They can be highly effective short-term but lead to burnout, resentment, and churn if overused. Users may stay — but they won't be happy about it.</p>
-          <div class="hat-drives">
-            <span class="hat-drive-chip" style="background:#F97316">⏳ CD6 Scarcity</span>
-            <span class="hat-drive-chip" style="background:#06B6D4">🎲 CD7 Curiosity</span>
-            <span class="hat-drive-chip" style="background:#EF4444">⚠️ CD8 Loss</span>
-          </div>
-          <p class="hat-note">⚠️ Use sparingly and ethically. Always pair with White Hat drives. Never manufacture false urgency or fake scarcity.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── BRAIN SECTION ───────────────────────────────────── -->
-  <section id="brain">
-    <div class="brain-section">
-      <div class="section-label">Framework Axis</div>
-      <div class="section-title">Left Brain vs Right Brain</div>
-      <p class="section-sub">A second axis: whether the drive comes from logic &amp; structure (Left Brain / extrinsic) or from creativity &amp; feelings (Right Brain / intrinsic).</p>
-      <div class="brain-grid">
-        <div class="brain-col left">
-          <h3>🔢 Left Brain — Extrinsic</h3>
-          <p>Logic, ownership, and analytical thinking. Left Brain drives respond to clear metrics, tangible rewards, and structured systems. Users can explain <em>why</em> they're engaged.</p>
-          <div class="brain-drives">
-            <span class="brain-drive-chip" style="background:#3B82F6">🏆 CD2 Accomplishment</span>
-            <span class="brain-drive-chip" style="background:#10B981">💎 CD4 Ownership</span>
-            <span class="brain-drive-chip" style="background:#F97316">⏳ CD6 Scarcity</span>
-            <span class="brain-drive-chip" style="background:#EF4444">⚠️ CD8 Loss</span>
-          </div>
-        </div>
-        <div class="brain-col right">
-          <h3>🧠 Right Brain — Intrinsic</h3>
-          <p>Creativity, emotion, and social connection. Right Brain drives are harder to quantify but create deeper loyalty. Users often can't fully explain why they love the product — they just do.</p>
-          <div class="brain-drives">
-            <span class="brain-drive-chip" style="background:#F59E0B">🌟 CD1 Epic Meaning</span>
-            <span class="brain-drive-chip" style="background:#8B5CF6">🎨 CD3 Creativity</span>
-            <span class="brain-drive-chip" style="background:#EC4899">👥 CD5 Social</span>
-            <span class="brain-drive-chip" style="background:#06B6D4">🎲 CD7 Curiosity</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ── APPLY SECTION ───────────────────────────────────── -->
   <hr class="section-divider">
