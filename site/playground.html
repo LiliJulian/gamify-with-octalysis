@@ -538,14 +538,121 @@ window.claimStamp = function(cd) {
 
 function initPassportStamps() {}
 
-// ── Stub render/init functions for CD5–CD8 (filled in later tasks) ──
-function renderLivePulse()      { return '<div class="demo-empty">CD5 demo coming soon</div>'; }
-function renderEventTicket()    { return '<div class="demo-empty">CD6 demo coming soon</div>'; }
+// ── CD5: Live Pulse ──────────────────────────────────────────
+const PULSE_MSGS = [
+  '🎨 A designer in Berlin just earned Level 4',
+  '💻 12 developers are exploring CD7 right now',
+  '📚 An educator from Tokyo claimed their first stamp',
+  '🚀 3 people just completed the XP challenge',
+  '🌍 84 new members joined this week',
+  '🏆 Someone in São Paulo hit Expert tier',
+  '💡 15 designers are using the Combo Builder',
+  '🔥 A streak champion in Seoul: 42 days running',
+];
+let pulseInterval = null;
+
+function renderLivePulse() {
+  return `
+  <div class="demo-title">Live Pulse</div>
+  <div style="background:#0d1117;border-radius:12px;padding:16px;border:1px solid #21262d">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <div style="width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 8px #10B981;animation:pulse-dot 1.5s infinite"></div>
+      <span style="font-size:.72rem;font-weight:700;color:#10B981">Live Activity</span>
+    </div>
+    <style>@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}</style>
+    <div id="pulse-feed" style="display:flex;flex-direction:column;gap:6px;max-height:200px;overflow:hidden"></div>
+  </div>`;
+}
+
+function initLivePulse() {
+  if (pulseInterval) clearInterval(pulseInterval);
+  const feed = document.getElementById('pulse-feed');
+  if (!feed) return;
+  feed.innerHTML = '';
+
+  function addMsg() {
+    const el = document.getElementById('pulse-feed');
+    if (!el) { clearInterval(pulseInterval); return; }
+    const msg = PULSE_MSGS[Math.floor(Math.random() * PULSE_MSGS.length)];
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:flex-start;gap:8px;background:#161b22;border-radius:8px;padding:8px 10px;border:1px solid #21262d;opacity:0;transition:opacity .4s;font-size:.78rem;color:#e6edf3';
+    row.innerHTML = `<span style="flex-shrink:0;margin-top:1px;font-size:.7rem;color:#6b7280">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>${msg}`;
+    el.insertBefore(row, el.firstChild);
+    requestAnimationFrame(() => row.style.opacity = '1');
+    while (el.children.length > 5) el.removeChild(el.lastChild);
+  }
+
+  addMsg();
+  pulseInterval = setInterval(addMsg, 2200);
+}
+
+// ── CD6: Event Ticket ────────────────────────────────────────
+let ticketClaimed = false;
+let countdownInterval = null;
+let remainingSeconds = 23 * 3600 + 47 * 60 + 12;
+
+function renderEventTicket() {
+  const seats = ticketClaimed ? 4 : 3;
+  const seatsHtml = Array.from({length:5}, (_,i) =>
+    i < seats
+      ? `<div style="width:18px;height:18px;border-radius:50%;background:#F97316;border:2px solid #ea580c"></div>`
+      : `<div style="width:18px;height:18px;border-radius:50%;border:2px dashed #30363d;background:#0d1117"></div>`
+  ).join('');
+
+  return `
+  <div class="demo-title">Event Ticket</div>
+  <div style="border-radius:12px;overflow:hidden;border:1px solid #30363d">
+    <div style="background:linear-gradient(135deg,#7c2d12,#c2410c);padding:16px;text-align:center">
+      <div style="font-size:.65rem;color:#fed7aa;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px">Octalysis Workshop</div>
+      <div style="font-size:1.1rem;font-weight:900;color:#fff">Live Design Sprint</div>
+    </div>
+    <div style="background:#161b22;padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div>
+          <div style="font-size:.62rem;color:#6b7280;text-transform:uppercase;letter-spacing:.6px">Time Remaining</div>
+          <div id="ticket-countdown" style="font-size:1.6rem;font-weight:900;color:#F97316;letter-spacing:-.02em">23:47:12</div>
+        </div>
+        <div>
+          <div style="font-size:.62rem;color:#6b7280;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px">Seats</div>
+          <div style="display:flex;gap:4px">${seatsHtml}</div>
+          <div style="font-size:.62rem;color:#F97316;margin-top:3px">${5-seats} of 5 remaining</div>
+        </div>
+      </div>
+      <button id="ticket-btn" onclick="claimTicket()" ${ticketClaimed ? 'disabled' : ''}
+        style="width:100%;background:${ticketClaimed ? '#21262d' : '#F97316'};color:${ticketClaimed ? '#6b7280' : '#fff'};border:none;border-radius:8px;padding:10px;font-size:.84rem;font-weight:700;cursor:${ticketClaimed ? 'default' : 'pointer'};transition:background .2s">
+        ${ticketClaimed ? '✓ Spot Claimed' : 'Claim Your Spot'}
+      </button>
+    </div>
+  </div>`;
+}
+
+window.claimTicket = function() {
+  if (ticketClaimed) return;
+  ticketClaimed = true;
+  const demoEl = document.getElementById('demo-content');
+  if (demoEl) demoEl.innerHTML = renderEventTicket();
+  initEventTicket();
+};
+
+function formatCountdown(s) {
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+function initEventTicket() {
+  if (countdownInterval) clearInterval(countdownInterval);
+  countdownInterval = setInterval(() => {
+    const el = document.getElementById('ticket-countdown');
+    if (!el) { clearInterval(countdownInterval); return; }
+    remainingSeconds = Math.max(0, remainingSeconds - 1);
+    el.textContent = formatCountdown(remainingSeconds);
+  }, 1000);
+}
+
+// ── Stub render/init functions for CD7–CD8 (filled in later tasks) ──
 function renderScratchCard()    { return '<div class="demo-empty">CD7 demo coming soon</div>'; }
 function renderStreakTracker()  { return '<div class="demo-empty">CD8 demo coming soon</div>'; }
 
-function initLivePulse()     {}
-function initEventTicket()   {}
 function initScratchCard()   {}
 function initStreakTracker() {}
 </script>
