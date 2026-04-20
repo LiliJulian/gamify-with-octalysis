@@ -91,20 +91,21 @@
       margin: 0 auto 48px; line-height: 1.7;
     }
     .oct-hero {
-      position: relative; width: 800px; height: 800px;
+      position: relative;
+      width: min(800px, calc(100vw - 48px));
+      aspect-ratio: 1;
       margin: 0 auto;
     }
     #ring-svg {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      width: 800px; height: 800px;
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
     }
     .spoke-card {
       position: absolute; transform: translate(-50%,-50%);
       background: #fff; border-radius: 14px; padding: 12px 14px;
       border: 1.5px solid #E5E7EB;
       box-shadow: 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04);
-      width: 148px; cursor: pointer; transition: all .2s;
+      width: clamp(90px, 18.5vw, 148px); cursor: pointer; transition: all .2s;
       text-decoration: none; color: inherit;
     }
     .spoke-card:hover {
@@ -125,10 +126,8 @@
     }
     .spoke-name { font-size: .78rem; font-weight: 800; color: #2563EB; line-height: 1.25; margin-bottom: 4px; }
     .spoke-desc { font-size: .67rem; color: #6B7280; line-height: 1.45; }
-    @media (max-width: 900px) {
-      .oct-hero { width: 100%; height: auto; aspect-ratio: 1; max-width: 500px; }
-      #ring-svg { width: 100%; height: 100%; }
-      .spoke-card { width: 100px; padding: 8px 10px; font-size: .7rem; }
+    @media (max-width: 600px) {
+      .spoke-card { padding: 8px 10px; font-size: .7rem; }
       .spoke-name { font-size: .65rem; }
       .spoke-desc { display: none; }
     }
@@ -466,42 +465,42 @@
     <div class="oct-hero">
       <svg id="ring-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg"></svg>
 
-      <a href="#drive-1" class="spoke-card" style="left:400px;top:66px">
+      <a href="#drive-1" class="spoke-card" style="left:50%;top:8.25%">
         <div class="spoke-card-top"><div class="spoke-num">1</div><div class="spoke-icon-box">🌐</div></div>
         <div class="spoke-name">Epic Meaning &amp; Calling</div>
         <div class="spoke-desc">The drive to become part of something bigger than ourselves.</div>
       </a>
-      <a href="#drive-2" class="spoke-card" style="left:655px;top:170px">
+      <a href="#drive-2" class="spoke-card" style="left:81.875%;top:21.25%">
         <div class="spoke-card-top"><div class="spoke-num">2</div><div class="spoke-icon-box">🏆</div></div>
         <div class="spoke-name">Development &amp; Accomplishment</div>
         <div class="spoke-desc">The drive to level up, improve, and achieve progress.</div>
       </a>
-      <a href="#drive-3" class="spoke-card" style="left:726px;top:400px">
+      <a href="#drive-3" class="spoke-card" style="left:90.75%;top:50%">
         <div class="spoke-card-top"><div class="spoke-num">3</div><div class="spoke-icon-box">🧩</div></div>
         <div class="spoke-name">Empowerment of Creativity</div>
         <div class="spoke-desc">The drive to create, experiment, and get real feedback.</div>
       </a>
-      <a href="#drive-4" class="spoke-card" style="left:655px;top:630px">
+      <a href="#drive-4" class="spoke-card" style="left:81.875%;top:78.75%">
         <div class="spoke-card-top"><div class="spoke-num">4</div><div class="spoke-icon-box">📦</div></div>
         <div class="spoke-name">Ownership &amp; Possession</div>
         <div class="spoke-desc">The drive to collect, accumulate, and organise.</div>
       </a>
-      <a href="#drive-5" class="spoke-card" style="left:400px;top:734px">
+      <a href="#drive-5" class="spoke-card" style="left:50%;top:91.75%">
         <div class="spoke-card-top"><div class="spoke-num">5</div><div class="spoke-icon-box">👥</div></div>
         <div class="spoke-name">Social Influence &amp; Relatedness</div>
         <div class="spoke-desc">The drive to collaborate, compete, and express social identity.</div>
       </a>
-      <a href="#drive-6" class="spoke-card" style="left:145px;top:630px">
+      <a href="#drive-6" class="spoke-card" style="left:18.125%;top:78.75%">
         <div class="spoke-card-top"><div class="spoke-num">6</div><div class="spoke-icon-box">⏳</div></div>
         <div class="spoke-name">Scarcity &amp; Impatience</div>
         <div class="spoke-desc">The drive to obsess over what we cannot have yet.</div>
       </a>
-      <a href="#drive-7" class="spoke-card" style="left:74px;top:400px">
+      <a href="#drive-7" class="spoke-card" style="left:9.25%;top:50%">
         <div class="spoke-card-top"><div class="spoke-num">7</div><div class="spoke-icon-box">🎲</div></div>
         <div class="spoke-name">Unpredictability &amp; Curiosity</div>
         <div class="spoke-desc">The drive to know what is unpredictable and new.</div>
       </a>
-      <a href="#drive-8" class="spoke-card" style="left:145px;top:170px">
+      <a href="#drive-8" class="spoke-card" style="left:18.125%;top:21.25%">
         <div class="spoke-card-top"><div class="spoke-num">8</div><div class="spoke-icon-box">🚩</div></div>
         <div class="spoke-name">Loss &amp; Avoidance</div>
         <div class="spoke-desc">The drive to avoid undesirable outcomes and protect current state.</div>
