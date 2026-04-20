@@ -238,6 +238,8 @@ pgSvg.appendChild(ct);
 
 // ── Activate a drive ────────────────────────────────────────────
 function activateDrive(cd) {
+  if (pulseInterval) { clearInterval(pulseInterval); pulseInterval = null; }
+  if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
   activeCd = cd;
   const d = DRIVES[cd - 1];
 
@@ -649,12 +651,114 @@ function initEventTicket() {
   }, 1000);
 }
 
-// ── Stub render/init functions for CD7–CD8 (filled in later tasks) ──
-function renderScratchCard()    { return '<div class="demo-empty">CD7 demo coming soon</div>'; }
-function renderStreakTracker()  { return '<div class="demo-empty">CD8 demo coming soon</div>'; }
+// ── CD7: Scratch Card ────────────────────────────────────────
+const SCRATCH_POOL = [
+  {name:'Variable Reward', desc:'Unpredictable payoffs are more motivating than predictable ones.'},
+  {name:'Easter Egg', desc:'Hidden surprises reward curious explorers and create delight.'},
+  {name:'Glowing Choice', desc:'Highlighting one option makes it feel special and urgent.'},
+  {name:'Rolling Rewards', desc:'Rewards that build over time create anticipation for the next cycle.'},
+  {name:'Sudden Reward', desc:'Unexpected bonuses create emotional spikes stronger than any announcement.'},
+  {name:'Mini Quest', desc:'Small side-challenges break monotony and reward exploration.'},
+  {name:'Visual Storytelling', desc:'Showing events as they unfold keeps users engaged with what happens next.'},
+  {name:'Evolved UI', desc:'An interface that reveals new features over time sustains long-term curiosity.'},
+];
 
-function initScratchCard()   {}
-function initStreakTracker() {}
+let currentScratch = null;
+let scratchRevealed = false;
+
+function pickScratch() {
+  return SCRATCH_POOL[Math.floor(Math.random() * SCRATCH_POOL.length)];
+}
+
+function renderScratchCard() {
+  currentScratch = pickScratch();
+  scratchRevealed = false;
+  return `
+  <div class="demo-title">Scratch Card</div>
+  <div style="background:#0d1117;border-radius:12px;padding:16px;border:1px solid #21262d;text-align:center">
+    <div style="font-size:.72rem;color:#6b7280;margin-bottom:14px">Click to reveal a hidden technique</div>
+    <div id="scratch-card" onclick="revealScratch()" style="position:relative;height:110px;border-radius:10px;overflow:hidden;cursor:pointer;margin-bottom:14px">
+      <!-- Revealed content (behind) -->
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0e4d4d,#0d3d5a);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px">
+        <div id="scratch-technique" style="font-size:.95rem;font-weight:900;color:#06B6D4">${currentScratch.name}</div>
+        <div id="scratch-desc" style="font-size:.75rem;color:#8b949e;line-height:1.5;max-width:220px">${currentScratch.desc}</div>
+      </div>
+      <!-- Scratch overlay (on top) -->
+      <div id="scratch-overlay" style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,#21262d,#21262d 4px,#1c2129 4px,#1c2129 8px);display:flex;align-items:center;justify-content:center;transition:opacity .5s">
+        <div style="font-size:1.8rem">🪙</div>
+        <div style="font-size:.75rem;color:#8b949e;margin-left:8px">Scratch here</div>
+      </div>
+    </div>
+    <button onclick="resetScratch()" style="background:#161b22;color:#06B6D4;border:1px solid #06B6D4;border-radius:8px;padding:7px 16px;font-size:.78rem;font-weight:700;cursor:pointer">↺ Scratch another</button>
+  </div>`;
+}
+
+window.revealScratch = function() {
+  if (scratchRevealed) return;
+  scratchRevealed = true;
+  const overlay = document.getElementById('scratch-overlay');
+  if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+};
+
+window.resetScratch = function() {
+  const demoEl = document.getElementById('demo-content');
+  if (demoEl) demoEl.innerHTML = renderScratchCard();
+};
+
+function initScratchCard() {}
+
+// ── CD8: Streak Tracker ──────────────────────────────────────
+let streakKept = false;
+
+function renderStreakTracker() {
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const filledDays = [0,1,2,3,4];
+  const todayIdx = 5;
+
+  const dayDots = days.map((day, i) => {
+    let bg, border, color;
+    if (streakKept && i === todayIdx) {
+      bg = '#10B981'; border = '#059669'; color = '#6ee7b7';
+    } else if (filledDays.includes(i)) {
+      bg = '#EF4444'; border = '#dc2626'; color = '#fca5a5';
+    } else if (i === todayIdx) {
+      bg = 'transparent'; border = '#EF4444'; color = '#EF4444';
+    } else {
+      bg = '#21262d'; border = '#30363d'; color = '#6b7280';
+    }
+    return `<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+      <div style="width:28px;height:28px;border-radius:50%;background:${bg};border:2px solid ${border};display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:${color}">${i === todayIdx ? (streakKept ? '✓' : '?') : '✓'}</div>
+      <div style="font-size:.55rem;color:#6b7280">${day}</div>
+    </div>`;
+  }).join('');
+
+  const warningHtml = streakKept
+    ? `<div style="display:flex;align-items:center;gap:6px;background:#064e3b;border-radius:8px;padding:8px 12px;border:1px solid #059669;font-size:.78rem;color:#6ee7b7"><span>✓</span> Streak protected — 6 days strong!</div>`
+    : `<div style="display:flex;align-items:center;gap:6px;background:#450a0a;border-radius:8px;padding:8px 12px;border:1px solid #dc2626;font-size:.78rem;color:#fca5a5"><span>⚠️</span> Streak at risk — complete today's task to keep it!</div>`;
+
+  return `
+  <div class="demo-title">Streak Tracker</div>
+  <div style="background:#0d1117;border-radius:12px;padding:16px;border:1px solid #21262d">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+      <span style="font-size:1.8rem">🔥</span>
+      <div>
+        <div style="font-size:1.2rem;font-weight:900;color:${streakKept ? '#10B981' : '#EF4444'}">${streakKept ? 6 : 5} day streak</div>
+        <div style="font-size:.68rem;color:#6b7280">Keep going — don't break the chain</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:14px">${dayDots}</div>
+    ${warningHtml}
+    ${streakKept ? '' : `<button onclick="keepStreak()" style="width:100%;margin-top:10px;background:#EF4444;color:#fff;border:none;border-radius:8px;padding:10px;font-size:.84rem;font-weight:700;cursor:pointer">🔥 Keep My Streak</button>`}
+  </div>`;
+}
+
+window.keepStreak = function() {
+  streakKept = true;
+  const demoEl = document.getElementById('demo-content');
+  if (demoEl) { demoEl.innerHTML = renderStreakTracker(); }
+};
+
+function initStreakTracker() { streakKept = false; }
 </script>
 </body>
 </html>
