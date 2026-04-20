@@ -410,16 +410,140 @@ window.earnXP = function(el) {
 
 function initXPLevelUp() { xpCurrent = 680; }
 
-// ── Stub render/init functions for CD3–CD8 (filled in later tasks) ──
-function renderComboBuilder()   { return '<div class="demo-empty">CD3 demo coming soon</div>'; }
-function renderPassportStamps() { return '<div class="demo-empty">CD4 demo coming soon</div>'; }
+// ── CD3: Combo Builder ────────────────────────────────────────
+const COMBO_TAGS = ['Progress Bar','Streak','Badge','Leaderboard','Scratch Card','Countdown Timer','Boss Fight','Random Reward','Social Proof','Quest List','Stamp Collection','Narrative'];
+const COMBOS = {
+  'Progress Bar+Streak': {name:'The Habit Loop', effect:'Daily momentum builds automatic behaviour'},
+  'Badge+Leaderboard': {name:'The Status Race', effect:'Visible rank turns achievement into competition'},
+  'Scratch Card+Random Reward': {name:'Variable Surprise', effect:'Unpredictable payoff creates compulsive checking'},
+  'Countdown Timer+Leaderboard': {name:'Rush Hour', effect:'Urgency + rank creates peak engagement spikes'},
+  'Boss Fight+Progress Bar': {name:'Final Push', effect:'Visible endpoint makes the hardest challenge feel winnable'},
+  'Narrative+Badge': {name:'Story Reward', effect:'Meaning-laden achievement deepens emotional investment'},
+};
+const COMBO_DEFAULT = {name:'Custom Combo', effect:'Pick 2–3 techniques to see their combined effect'};
+
+function renderComboBuilder() {
+  return `
+  <div class="demo-title">Combo Builder</div>
+  <div style="background:#0d1117;border-radius:12px;padding:16px;border:1px solid #21262d">
+    <div style="font-size:.7rem;color:#6b7280;margin-bottom:10px">Pick 2–3 techniques:</div>
+    <div id="combo-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+      ${COMBO_TAGS.map(t => `<button class="combo-tag-btn" data-tag="${t}" onclick="toggleComboTag(this)"
+        style="font-size:.72rem;padding:5px 12px;border-radius:20px;border:1.5px solid #30363d;background:#161b22;color:#8b949e;cursor:pointer;transition:all .15s">${t}</button>`).join('')}
+    </div>
+    <div id="combo-result" style="background:#161b22;border-radius:10px;padding:14px;border:1px solid #30363d;min-height:70px">
+      <div style="font-size:.68rem;color:#6b7280;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Combo Effect</div>
+      <div id="combo-name" style="font-size:.95rem;font-weight:800;color:#8B5CF6;margin-bottom:4px">—</div>
+      <div id="combo-effect" style="font-size:.8rem;color:#8b949e;line-height:1.5">Select techniques above</div>
+    </div>
+  </div>`;
+}
+
+const selectedTags = new Set();
+window.toggleComboTag = function(btn) {
+  const tag = btn.dataset.tag;
+  if (selectedTags.has(tag)) {
+    selectedTags.delete(tag);
+    btn.style.background = '#161b22'; btn.style.color = '#8b949e';
+    btn.style.borderColor = '#30363d';
+  } else {
+    if (selectedTags.size >= 3) return;
+    selectedTags.add(tag);
+    btn.style.background = '#1a0d3f'; btn.style.color = '#a78bfa';
+    btn.style.borderColor = '#8B5CF6';
+  }
+  updateComboResult();
+};
+
+function updateComboResult() {
+  const tags = [...selectedTags].sort();
+  const key = tags.slice(0,2).join('+');
+  const combo = COMBOS[key] || (selectedTags.size >= 2 ? COMBO_DEFAULT : null);
+  const nameEl = document.getElementById('combo-name');
+  const effectEl = document.getElementById('combo-effect');
+  if (!nameEl || !effectEl) return;
+  if (combo) {
+    nameEl.textContent = combo.name;
+    effectEl.textContent = combo.effect;
+  } else {
+    nameEl.textContent = '—';
+    effectEl.textContent = 'Select techniques above';
+  }
+}
+
+function initComboBuilder() { selectedTags.clear(); }
+
+// ── CD4: Passport Stamps ─────────────────────────────────────
+const STAMP_DRIVES = [
+  {cd:1,icon:'🌐',color:'#F59E0B',name:'Epic Meaning'},
+  {cd:2,icon:'🏆',color:'#3B82F6',name:'Accomplishment'},
+  {cd:3,icon:'🧩',color:'#8B5CF6',name:'Creativity'},
+  {cd:4,icon:'📦',color:'#10B981',name:'Ownership'},
+  {cd:5,icon:'👥',color:'#EC4899',name:'Social'},
+  {cd:6,icon:'⏳',color:'#F97316',name:'Scarcity'},
+  {cd:7,icon:'🎲',color:'#06B6D4',name:'Curiosity'},
+  {cd:8,icon:'🚩',color:'#EF4444',name:'Loss Avoid.'},
+];
+const STAMP_KEY = 'octalysis_stamps';
+
+function getStamps() {
+  try { return JSON.parse(localStorage.getItem(STAMP_KEY)) || []; } catch { return []; }
+}
+function saveStamps(arr) {
+  try { localStorage.setItem(STAMP_KEY, JSON.stringify(arr)); } catch {}
+}
+
+function renderPassportStamps() {
+  const claimed = getStamps();
+  const count = claimed.length;
+  const stamps = STAMP_DRIVES.map(d => {
+    const isClaimed = claimed.includes(d.cd);
+    return isClaimed
+      ? `<div class="stamp-item claimed" style="border:2px solid ${d.color};background:color-mix(in srgb,${d.color} 12%,#0d1117);box-shadow:0 0 10px color-mix(in srgb,${d.color} 30%,transparent);border-radius:8px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:1.3rem;cursor:default">
+          ${d.icon}
+          <div style="font-size:.52rem;font-weight:800;color:${d.color}">${d.name}</div>
+         </div>`
+      : `<div onclick="claimStamp(${d.cd})" style="border:2px dashed #30363d;border-radius:8px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:1.3rem;opacity:.4;cursor:pointer;transition:opacity .15s" onmouseenter="this.style.opacity='.7'" onmouseleave="this.style.opacity='.4'">
+          ${d.icon}
+          <div style="font-size:.52rem;color:#6b7280">${d.name}</div>
+         </div>`;
+  }).join('');
+
+  return `
+  <div class="demo-title">Passport Stamps</div>
+  <div style="background:#0d1117;border-radius:12px;padding:16px;border:1px solid #21262d">
+    <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#6b7280;margin-bottom:12px">
+      <span>Octalysis Passport</span>
+      <span id="stamp-count-label">${count}/8 collected</span>
+    </div>
+    <div id="stamps-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px">
+      ${stamps}
+    </div>
+    <div style="height:4px;background:#21262d;border-radius:2px;overflow:hidden">
+      <div id="stamp-bar" style="width:${count/8*100}%;height:100%;background:linear-gradient(90deg,#10B981,#06B6D4);border-radius:2px;transition:width .4s"></div>
+    </div>
+    <div style="font-size:.65rem;color:#6b7280;margin-top:5px;text-align:center">Click unclaimed stamps to collect · Progress saved in browser</div>
+  </div>`;
+}
+
+window.claimStamp = function(cd) {
+  const claimed = getStamps();
+  if (!claimed.includes(cd)) {
+    claimed.push(cd);
+    saveStamps(claimed);
+  }
+  const demoEl = document.getElementById('demo-content');
+  if (demoEl) { demoEl.innerHTML = renderPassportStamps(); }
+};
+
+function initPassportStamps() {}
+
+// ── Stub render/init functions for CD5–CD8 (filled in later tasks) ──
 function renderLivePulse()      { return '<div class="demo-empty">CD5 demo coming soon</div>'; }
 function renderEventTicket()    { return '<div class="demo-empty">CD6 demo coming soon</div>'; }
 function renderScratchCard()    { return '<div class="demo-empty">CD7 demo coming soon</div>'; }
 function renderStreakTracker()  { return '<div class="demo-empty">CD8 demo coming soon</div>'; }
 
-function initComboBuilder()  {}
-function initPassportStamps(){}
 function initLivePulse()     {}
 function initEventTicket()   {}
 function initScratchCard()   {}
