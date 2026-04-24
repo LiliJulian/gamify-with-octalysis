@@ -221,7 +221,10 @@ const DRIVES = [
     hat:'⬛ Black Hat', brain:'🧠 Right Brain',
     desc:'Not knowing what comes next keeps the brain engaged. Variable rewards and hidden surprises create compulsive curiosity.',
     tabs:[
-      {name:'Scratch Card', render:()=>renderScratchCard(), init:()=>initScratchCard()},
+      {name:'Scratch Card',    render:()=>renderScratchCard(),   init:()=>initScratchCard()},
+      {name:'Easter Egg',      render:()=>renderEasterEgg(),     init:()=>initEasterEgg()},
+      {name:'Glowing Choice',  render:()=>renderGlowingChoice(), init:()=>initGlowingChoice()},
+      {name:'Rolling Rewards', render:()=>renderRollingRewards(),init:()=>initRollingRewards()},
     ]},
   { cd:8, name:'Loss & Avoidance',             icon:'🚩', color:'#EF4444',
     hat:'⬛ Black Hat', brain:'🔢 Left Brain',
@@ -1605,6 +1608,143 @@ window.resetScratch = function() {
 };
 
 function initScratchCard() {}
+
+// ── CD7: Easter Egg ──────────────────────────────────────────────
+let eggFound = false;
+
+function renderEasterEgg() {
+  return `
+  <div class="demo-title">Easter Egg</div>
+  <div style="background:#0d1117;border-radius:12px;padding:20px;border:1px solid #21262d;min-height:160px;position:relative">
+    <div style="font-size:.75rem;color:#8b949e;margin-bottom:8px">Explore the interface — something is hidden somewhere on this panel…</div>
+    <div style="height:60px;background:#161b22;border-radius:8px;border:1px dashed #30363d;display:flex;align-items:center;justify-content:center">
+      <span style="font-size:.75rem;color:#6b7280">Nothing here… or is there?</span>
+    </div>
+    <div id="egg-hidden" onclick="findEgg()" style="position:absolute;bottom:14px;right:16px;font-size:1.1rem;opacity:.12;cursor:pointer;transition:opacity .2s;user-select:none"
+      onmouseenter="this.style.opacity='.3'" onmouseleave="this.style.opacity='.12'">🥚</div>
+    <div id="egg-reveal" style="display:none;position:absolute;inset:0;background:linear-gradient(135deg,#0a1f24,#0d1117);border-radius:12px;align-items:center;justify-content:center;flex-direction:column;gap:8px;border:1px solid #06B6D4">
+      <div style="font-size:2rem">🎉</div>
+      <div style="font-size:.88rem;font-weight:800;color:#06B6D4">You found it!</div>
+      <div style="font-size:.72rem;color:#8b949e;text-align:center;max-width:180px">Easter Eggs reward curiosity and exploration — turning users into detectives.</div>
+    </div>
+  </div>`;
+}
+
+window.findEgg = function() {
+  if (eggFound) return;
+  eggFound = true;
+  const reveal = document.getElementById('egg-reveal');
+  if (reveal) { reveal.style.display='flex'; }
+};
+
+function initEasterEgg() { eggFound = false; }
+
+// ── CD7: Glowing Choice ──────────────────────────────────────────
+let glowPicked = false;
+
+function renderGlowingChoice() {
+  return `
+  <div class="demo-title">Glowing Choice</div>
+  <div style="background:#0d1117;border-radius:12px;padding:20px;border:1px solid #21262d">
+    <div style="font-size:.72rem;color:#6b7280;margin-bottom:14px">One option is calling to you… choose wisely.</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${[
+        {label:'🔵 Standard Path',    glow:false},
+        {label:'✨ Recommended Path', glow:true},
+        {label:'🔴 Challenge Path',   glow:false},
+      ].map((opt,i)=>`
+      <div onclick="glowPick(${i})" id="glow-opt-${i}"
+        style="padding:12px 16px;border-radius:10px;border:${opt.glow?'2px solid #06B6D4':'1px solid #30363d'};background:${opt.glow?'rgba(6,182,212,.08)':'#161b22'};cursor:pointer;font-size:.8rem;font-weight:${opt.glow?'700':'400'};color:${opt.glow?'#06B6D4':'#8b949e'};transition:all .2s;${opt.glow?'box-shadow:0 0 16px rgba(6,182,212,.25)':''}">
+        ${opt.label}${opt.glow?' 🌟':''}
+      </div>`).join('')}
+    </div>
+    <div id="glow-result" style="display:none;margin-top:12px;padding:10px;border-radius:8px;font-size:.75rem;text-align:center"></div>
+  </div>`;
+}
+
+window.glowPick = function(i) {
+  if (glowPicked) return;
+  glowPicked = true;
+  document.querySelectorAll('[id^="glow-opt-"]').forEach(el=>{ el.style.pointerEvents='none'; });
+  const result = document.getElementById('glow-result');
+  if (!result) return;
+  result.style.display = 'block';
+  if (i===1) {
+    result.style.background='rgba(6,182,212,.1)'; result.style.border='1px solid #06B6D4';
+    result.style.color='#06B6D4'; result.textContent='✨ +50 bonus XP for following the glow!';
+  } else {
+    result.style.background='#161b22'; result.style.border='1px solid #30363d';
+    result.style.color='#8b949e'; result.textContent='You chose your own path — the glow had a bonus waiting.';
+  }
+};
+
+function initGlowingChoice() { glowPicked = false; }
+
+// ── CD7: Rolling Rewards ─────────────────────────────────────────
+// rollInterval declared in Task 1
+let rollValue = 0;
+const ROLL_MAX = 100;
+
+function renderRollingRewards() {
+  return `
+  <div class="demo-title">Rolling Rewards</div>
+  <div style="background:#0d1117;border-radius:12px;padding:20px;border:1px solid #21262d;text-align:center">
+    <div style="font-size:.7rem;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Reward Meter</div>
+    <div style="font-size:2.8rem;font-weight:900;color:#06B6D4;margin-bottom:4px;letter-spacing:-.03em" id="roll-pct">0%</div>
+    <div style="height:16px;background:#21262d;border-radius:8px;overflow:hidden;margin:10px 0 6px">
+      <div id="roll-bar" style="width:0%;height:100%;background:linear-gradient(90deg,#06B6D4,#8B5CF6);border-radius:8px;transition:width .3s"></div>
+    </div>
+    <div style="font-size:.65rem;color:#6b7280;margin-bottom:16px">Accumulates passively — pays out at 100%</div>
+    <div id="roll-payout" style="display:none;background:linear-gradient(135deg,#0a1f24,#0d1117);border:1px solid #06B6D4;border-radius:10px;padding:12px;margin-bottom:12px">
+      <div style="font-size:1.4rem">🎰</div>
+      <div style="font-size:.88rem;font-weight:800;color:#06B6D4;margin-top:4px" id="roll-prize"></div>
+    </div>
+    <button onclick="rollClaim()" id="roll-claim-btn" style="background:#06B6D4;color:#111;border:none;border-radius:8px;padding:8px 20px;font-size:.82rem;font-weight:700;cursor:pointer;display:none">
+      🎰 Claim Reward
+    </button>
+  </div>`;
+}
+
+const ROLL_PRIZES = ['🏅 Rare Badge','⚡ 2× XP for 1 hour','🎨 Exclusive theme','🌟 +200 bonus XP'];
+
+window.rollClaim = function() {
+  const prize = ROLL_PRIZES[Math.floor(Math.random()*ROLL_PRIZES.length)];
+  const prizeEl = document.getElementById('roll-prize');
+  const payout  = document.getElementById('roll-payout');
+  const btn     = document.getElementById('roll-claim-btn');
+  if (prizeEl) prizeEl.textContent = prize;
+  if (payout)  payout.style.display  = 'block';
+  if (btn)     btn.style.display     = 'none';
+  rollValue = 0;
+  const bar = document.getElementById('roll-bar');
+  const pct = document.getElementById('roll-pct');
+  if (bar) bar.style.width = '0%';
+  if (pct) pct.textContent = '0%';
+  if (rollInterval) clearInterval(rollInterval);
+  rollInterval = setInterval(tickRoll, 300);
+};
+
+function tickRoll() {
+  rollValue = Math.min(rollValue + 2, ROLL_MAX);
+  const bar = document.getElementById('roll-bar');
+  const pct = document.getElementById('roll-pct');
+  if (!bar) { clearInterval(rollInterval); rollInterval=null; return; }
+  bar.style.width = rollValue + '%';
+  if (pct) pct.textContent = rollValue + '%';
+  if (rollValue >= ROLL_MAX) {
+    clearInterval(rollInterval); rollInterval=null;
+    const btn    = document.getElementById('roll-claim-btn');
+    const payout = document.getElementById('roll-payout');
+    if (btn)    btn.style.display    = 'block';
+    if (payout) payout.style.display = 'none';
+  }
+}
+
+function initRollingRewards() {
+  rollValue=0;
+  if(rollInterval){clearInterval(rollInterval);rollInterval=null;}
+  rollInterval = setInterval(tickRoll, 300);
+}
 
 // ── CD8: Streak Tracker ──────────────────────────────────────
 let streakKept = false;
