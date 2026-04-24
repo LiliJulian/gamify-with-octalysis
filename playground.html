@@ -203,7 +203,10 @@ const DRIVES = [
     hat:'⬜ White Hat', brain:'🧠 Right Brain',
     desc:'The drive to collaborate, compete, and belong. Seeing what peers do creates social benchmarking and conformity pressure.',
     tabs:[
-      {name:'Live Pulse', render:()=>renderLivePulse(), init:()=>initLivePulse()},
+      {name:'Live Pulse',     render:()=>renderLivePulse(),    init:()=>initLivePulse()},
+      {name:'Trophy Shelf',   render:()=>renderTrophyShelf(),  init:()=>{}},
+      {name:'Group Quest',    render:()=>renderGroupQuest(),   init:()=>{}},
+      {name:'Social Gifting', render:()=>renderSocialGifting(),init:()=>{}},
     ]},
   { cd:6, name:'Scarcity & Impatience',        icon:'⏳', color:'#F97316',
     hat:'⬛ Black Hat', brain:'🔢 Left Brain',
@@ -1204,6 +1207,121 @@ function initLivePulse() {
   addMsg();
   pulseInterval = setInterval(addMsg, 2200);
 }
+
+// ── CD5: Trophy Shelf ────────────────────────────────────────────
+const TROPHIES = [
+  {icon:'🥇', name:'First Place',   who:'Maya K.',  when:'2 days ago'},
+  {icon:'🏅', name:'Streak Master', who:'You',       when:'Today'},
+  {icon:'🎖️', name:'Boss Slayer',  who:'Luca T.',  when:'1 week ago'},
+  {icon:'⭐', name:'Top Mentor',    who:'Rin S.',   when:'3 days ago'},
+];
+
+function renderTrophyShelf() {
+  return `
+  <div class="demo-title">Trophy Shelf</div>
+  <div style="background:#0d1117;border-radius:12px;padding:16px;border:1px solid #21262d">
+    <div style="font-size:.68rem;color:#6b7280;margin-bottom:12px">Hover a trophy to see who earned it</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+      ${TROPHIES.map(t=>`
+      <div style="position:relative;background:#161b22;border:1px solid #30363d;border-radius:10px;padding:14px;text-align:center;cursor:default"
+        onmouseenter="document.getElementById('trophy-tip-${t.name.replace(/\s/g,'-')}').style.display='block'"
+        onmouseleave="document.getElementById('trophy-tip-${t.name.replace(/\s/g,'-')}').style.display='none'">
+        <div style="font-size:2rem;margin-bottom:4px">${t.icon}</div>
+        <div style="font-size:.72rem;font-weight:700;color:#e6edf3">${t.name}</div>
+        <div id="trophy-tip-${t.name.replace(/\s/g,'-')}" style="display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#21262d;border:1px solid #30363d;border-radius:6px;padding:6px 10px;white-space:nowrap;font-size:.65rem;color:#8b949e;z-index:10">
+          ${t.who} · ${t.when}
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ── CD5: Group Quest ─────────────────────────────────────────────
+const GROUP_GOAL = 50;
+let groupProgress = 31;
+
+function renderGroupQuest() {
+  const pct = Math.round(groupProgress/GROUP_GOAL*100);
+  return `
+  <div class="demo-title">Group Quest</div>
+  <div style="background:#0d1117;border-radius:12px;padding:20px;border:1px solid #21262d;text-align:center">
+    <div style="font-size:.7rem;color:#6b7280;letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px">Community Goal</div>
+    <div style="font-size:1rem;font-weight:800;color:#e6edf3;margin-bottom:14px">Teach 50 people Octalysis this month</div>
+    <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#6b7280;margin-bottom:4px">
+      <span><span id="gq-count">${groupProgress}</span> / ${GROUP_GOAL} people reached</span>
+      <span id="gq-pct">${pct}%</span>
+    </div>
+    <div style="height:12px;background:#21262d;border-radius:6px;overflow:hidden;margin-bottom:16px">
+      <div id="gq-bar" style="width:${pct}%;height:100%;background:linear-gradient(90deg,#EC4899,#8B5CF6);border-radius:6px;transition:width .5s"></div>
+    </div>
+    <div style="font-size:.72rem;color:#8b949e;margin-bottom:14px">31 contributors so far · Be the next</div>
+    <button onclick="gqContribute()" id="gq-btn"
+      style="background:#EC4899;color:#fff;border:none;border-radius:8px;padding:8px 24px;font-size:.82rem;font-weight:700;cursor:pointer">
+      + I Taught Someone
+    </button>
+  </div>`;
+}
+
+window.gqContribute = function() {
+  if (groupProgress >= GROUP_GOAL) return;
+  groupProgress++;
+  const pct = Math.round(groupProgress/GROUP_GOAL*100);
+  const cEl = document.getElementById('gq-count');
+  const pEl = document.getElementById('gq-pct');
+  const bar = document.getElementById('gq-bar');
+  if (cEl) cEl.textContent = groupProgress;
+  if (pEl) pEl.textContent = pct+'%';
+  if (bar) bar.style.width = pct+'%';
+  if (groupProgress >= GROUP_GOAL) {
+    const btn = document.getElementById('gq-btn');
+    if (btn) { btn.textContent='🎉 Goal Reached!'; btn.disabled=true; btn.style.background='#10B981'; }
+  }
+};
+
+// ── CD5: Social Gifting ──────────────────────────────────────────
+const GIFT_TEAMMATES = ['Maya K. 🎨','Luca T. 💻','Rin S. 📚'];
+let giftSelected = null;
+
+function renderSocialGifting() {
+  return `
+  <div class="demo-title">Social Gifting</div>
+  <div style="background:#0d1117;border-radius:12px;padding:16px;border:1px solid #21262d">
+    <div style="font-size:.72rem;color:#6b7280;margin-bottom:10px">Send a boost to a teammate</div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+      ${GIFT_TEAMMATES.map((t,i)=>`
+      <div onclick="giftSelect(${i})" id="gift-tm-${i}"
+        style="display:flex;align-items:center;justify-content:space-between;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:9px 12px;cursor:pointer;transition:border-color .15s">
+        <span style="font-size:.78rem">${t}</span>
+        <span id="gift-tm-xp-${i}" style="font-size:.65rem;color:#6b7280">— XP</span>
+      </div>`).join('')}
+    </div>
+    <button onclick="giftSend()" id="gift-btn"
+      style="background:#EC4899;color:#fff;border:none;border-radius:8px;padding:8px;font-size:.82rem;font-weight:700;cursor:pointer;width:100%;transition:opacity .2s;opacity:${giftSelected===null?'.5':'1'}">
+      🎁 Send +50 XP Boost
+    </button>
+    <div id="gift-msg" style="display:none;font-size:.72rem;color:#10B981;text-align:center;margin-top:8px"></div>
+  </div>`;
+}
+
+window.giftSelect = function(i) {
+  giftSelected = i;
+  GIFT_TEAMMATES.forEach((_,j) => {
+    const el = document.getElementById(`gift-tm-${j}`);
+    if (el) el.style.borderColor = j===i ? '#EC4899' : '#30363d';
+  });
+  const btn = document.getElementById('gift-btn');
+  if (btn) btn.style.opacity = '1';
+};
+
+window.giftSend = function() {
+  if (giftSelected === null) return;
+  const xpEl = document.getElementById(`gift-tm-xp-${giftSelected}`);
+  if (xpEl) { xpEl.textContent='+50 XP'; xpEl.style.color='#EC4899'; }
+  const msg = document.getElementById('gift-msg');
+  if (msg) { msg.textContent=`🎁 Boost sent to ${GIFT_TEAMMATES[giftSelected].split(' ')[0]}!`; msg.style.display='block'; }
+  const btn = document.getElementById('gift-btn');
+  if (btn) { btn.disabled=true; btn.style.opacity='.5'; btn.textContent='✓ Sent'; }
+};
 
 // ── CD6: Event Ticket ────────────────────────────────────────
 let ticketClaimed = false;
