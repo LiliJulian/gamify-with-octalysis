@@ -176,7 +176,10 @@ const DRIVES = [
     hat:'⬜ White Hat', brain:'🔢 Left Brain',
     desc:'The internal drive to progress, develop skills, and overcome challenges. Progress bars and XP make invisible growth visible.',
     tabs:[
-      {name:'XP Level-Up', render:()=>renderXPLevelUp(), init:()=>initXPLevelUp()},
+      {name:'XP Level-Up',  render:()=>renderXPLevelUp(),   init:()=>initXPLevelUp()},
+      {name:'Leaderboard',  render:()=>renderLeaderboard(),  init:()=>initLeaderboard()},
+      {name:'Boss Fight',   render:()=>renderBossFight(),    init:()=>initBossFight()},
+      {name:'Quest List',   render:()=>renderQuestList(),    init:()=>initQuestList()},
     ]},
   { cd:3, name:'Empowerment of Creativity',    icon:'🧩', color:'#8B5CF6',
     hat:'⬜ White Hat', brain:'🧠 Right Brain',
@@ -573,6 +576,169 @@ window.earnXP = function(el) {
 };
 
 function initXPLevelUp() { xpCurrent = 680; }
+
+// ── CD2: Leaderboard ─────────────────────────────────────────────────
+let lbYourXP = 3940;
+
+function renderLeaderboard() {
+  return `
+  <div class="demo-title">Leaderboard</div>
+  <div style="background:#0d1117;border-radius:12px;padding:16px;border:1px solid #21262d">
+    <div style="display:flex;flex-direction:column;gap:5px">
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;background:#1a2d4a">
+        <span style="width:20px;font-size:.8rem">🥇</span>
+        <span style="flex:1;font-size:.78rem">Maya K.</span>
+        <span style="font-size:.68rem;font-weight:700;color:#3B82F6">4,820 XP</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;background:#1a2d4a">
+        <span style="width:20px;font-size:.8rem">🥈</span>
+        <span style="flex:1;font-size:.78rem">Luca T.</span>
+        <span style="font-size:.68rem;font-weight:700;color:#3B82F6">4,310 XP</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;background:#2a1f3f;border:1px solid #8B5CF6">
+        <span style="width:20px;font-size:.75rem;font-weight:900;color:#8B5CF6">3</span>
+        <span style="flex:1;font-size:.78rem;color:#a78bfa;font-weight:700">You</span>
+        <span id="lb-your-xp" style="font-size:.68rem;font-weight:700;color:#a78bfa">3,940 XP</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px">
+        <span style="width:20px;font-size:.72rem;color:#6b7280">4</span>
+        <span style="flex:1;font-size:.78rem;color:#8b949e">Rin S.</span>
+        <span style="font-size:.68rem;font-weight:700;color:#6b7280">3,210 XP</span>
+      </div>
+    </div>
+    <div id="lb-nudge" style="font-size:.65rem;color:#6b7280;text-align:center;margin-top:10px;padding:7px;background:#0d1117;border-radius:6px">
+      +370 XP to reach #2 · <button onclick="lbEarnXP()" style="background:none;border:none;color:#3B82F6;font-size:.65rem;font-weight:700;cursor:pointer;padding:0">Earn XP →</button>
+    </div>
+  </div>`;
+}
+
+window.lbEarnXP = function() {
+  lbYourXP += 80;
+  const xpEl  = document.getElementById('lb-your-xp');
+  const nudge = document.getElementById('lb-nudge');
+  if (xpEl) { xpEl.textContent = lbYourXP.toLocaleString() + ' XP'; xpEl.style.transform='scale(1.15)'; xpEl.style.color='#fff'; setTimeout(()=>{xpEl.style.transform='';xpEl.style.color='#a78bfa';},300); }
+  if (nudge) {
+    const gap = 4310 - lbYourXP;
+    nudge.innerHTML = gap <= 0
+      ? '🎉 You reached #2!'
+      : `+${gap} XP to reach #2 · <button onclick="lbEarnXP()" style="background:none;border:none;color:#3B82F6;font-size:.65rem;font-weight:700;cursor:pointer;padding:0">Earn XP →</button>`;
+  }
+};
+
+function initLeaderboard() { lbYourXP = 3940; }
+
+// ── CD2: Boss Fight ──────────────────────────────────────────────
+let bossHp = 62;
+let bossLocked = false;
+
+const BOSS_QUESTIONS = [
+  { q:'Which Core Drive uses Countdown Timers?',          a:1, opts:['Epic Meaning','Scarcity & Impatience','Loss & Avoidance'] },
+  { q:'What does CD3 (Empowerment of Creativity) drive?', a:0, opts:['Creative expression & feedback','Fear of missing out','Social conformity'] },
+  { q:'Which hat colour labels CD8?',                     a:2, opts:['White Hat','Grey Hat','Black Hat'] },
+];
+let bossQIdx = 0;
+
+function renderBossFight() {
+  bossHp = 62; bossLocked = false; bossQIdx = 0;
+  return `
+  <div class="demo-title">Boss Fight</div>
+  <div style="background:#0d1117;border-radius:12px;padding:16px;border:1px solid #21262d">
+    <div style="text-align:center;font-size:2rem;margin-bottom:4px" id="boss-emoji">👾</div>
+    <div style="font-size:.75rem;font-weight:800;text-align:center;color:#e6edf3;margin-bottom:2px">The Complexity Boss</div>
+    <div style="font-size:.6rem;color:#6b7280;text-align:center;margin-bottom:6px">HP: <span id="boss-hp-label">62%</span></div>
+    <div style="height:10px;background:#21262d;border-radius:5px;overflow:hidden;margin-bottom:12px">
+      <div id="boss-hp-bar" style="width:62%;height:100%;background:linear-gradient(90deg,#EF4444,#F97316);border-radius:5px;transition:width .5s"></div>
+    </div>
+    <div id="boss-q-block" style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px">
+      <div id="boss-q" style="font-size:.75rem;color:#8b949e;margin-bottom:8px">${BOSS_QUESTIONS[0].q}</div>
+      <div id="boss-opts" style="display:flex;flex-direction:column;gap:5px">
+        ${BOSS_QUESTIONS[0].opts.map((o,i)=>`<div onclick="bossAnswer(${i})" data-idx="${i}"
+          style="font-size:.72rem;padding:7px 10px;border-radius:6px;border:1px solid #30363d;cursor:pointer;transition:background .15s"
+          onmouseenter="if(!this.dataset.done)this.style.background='#21262d'" onmouseleave="if(!this.dataset.done)this.style.background=''">
+          ${String.fromCharCode(65+i)}. ${o}</div>`).join('')}
+      </div>
+    </div>
+    <div id="boss-msg" style="font-size:.68rem;color:#8b949e;text-align:center;margin-top:8px">Answer correctly to deal damage</div>
+  </div>`;
+}
+
+window.bossAnswer = function(chosenIdx) {
+  if (bossLocked) return;
+  const q = BOSS_QUESTIONS[bossQIdx];
+  const opts = document.querySelectorAll('#boss-opts [data-idx]');
+  if (chosenIdx === q.a) {
+    bossLocked = true;
+    opts[chosenIdx].style.background='#064e3b'; opts[chosenIdx].style.borderColor='#059669'; opts[chosenIdx].style.color='#6ee7b7';
+    bossHp = Math.max(0, bossHp - 22);
+    const bar = document.getElementById('boss-hp-bar');
+    const lbl = document.getElementById('boss-hp-label');
+    const msg = document.getElementById('boss-msg');
+    if (bar) bar.style.width = bossHp + '%';
+    if (lbl) lbl.textContent = bossHp + '%';
+    if (bossHp <= 0) {
+      document.getElementById('boss-emoji').textContent = '💀';
+      if (msg) msg.textContent = '🎉 Boss defeated! +500 XP earned';
+    } else {
+      bossQIdx = (bossQIdx + 1) % BOSS_QUESTIONS.length;
+      setTimeout(() => {
+        bossLocked = false;
+        const qEl   = document.getElementById('boss-q');
+        const optsEl = document.getElementById('boss-opts');
+        const newQ  = BOSS_QUESTIONS[bossQIdx];
+        if (qEl) qEl.textContent = newQ.q;
+        if (optsEl) optsEl.innerHTML = newQ.opts.map((o,i)=>`<div onclick="bossAnswer(${i})" data-idx="${i}"
+          style="font-size:.72rem;padding:7px 10px;border-radius:6px;border:1px solid #30363d;cursor:pointer;transition:background .15s"
+          onmouseenter="if(!this.dataset.done)this.style.background='#21262d'" onmouseleave="if(!this.dataset.done)this.style.background=''">
+          ${String.fromCharCode(65+i)}. ${o}</div>`).join('');
+        if (msg) msg.textContent = '⚔️ Hit! ' + bossHp + '% HP remaining';
+      }, 700);
+    }
+  } else {
+    opts[chosenIdx].style.background='#2d0a0a'; opts[chosenIdx].style.borderColor='#dc2626'; opts[chosenIdx].style.color='#f87171';
+    setTimeout(()=>{ opts[chosenIdx].style.background=''; opts[chosenIdx].style.borderColor=''; opts[chosenIdx].style.color=''; }, 600);
+  }
+};
+
+function initBossFight() { bossHp=62; bossLocked=false; bossQIdx=0; }
+
+// ── CD2: Quest List ──────────────────────────────────────────────
+let questDone = 0;
+
+function renderQuestList() {
+  return `
+  <div class="demo-title">Quest List</div>
+  <div style="background:#0d1117;border-radius:12px;padding:16px;border:1px solid #21262d">
+    <div style="font-size:.68rem;color:#6b7280;margin-bottom:8px">Complete all tasks to unlock the next chapter</div>
+    <div style="height:5px;background:#21262d;border-radius:3px;overflow:hidden;margin-bottom:12px">
+      <div id="quest-bar" style="width:0%;height:100%;background:linear-gradient(90deg,#3B82F6,#8B5CF6);border-radius:3px;transition:width .4s"></div>
+    </div>
+    ${['Read the CD2 description','Try the XP Level-Up demo','Beat the Boss Fight','Reach the Leaderboard top 3'].map((task,i)=>`
+    <div onclick="checkQuest(${i})" id="quest-row-${i}"
+      style="display:flex;align-items:center;gap:10px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:9px 12px;margin-bottom:6px;cursor:pointer;transition:opacity .2s">
+      <div id="quest-check-${i}" style="width:18px;height:18px;border-radius:50%;border:2px solid #30363d;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.6rem;transition:all .2s"></div>
+      <span style="font-size:.78rem">${task}</span>
+    </div>`).join('')}
+    <div id="quest-reward" style="display:none;background:#0d2137;border:1px solid #1d4ed8;border-radius:8px;padding:12px;text-align:center;margin-top:8px">
+      <div style="font-size:1.4rem">🏆</div>
+      <div style="font-size:.78rem;font-weight:700;color:#93c5fd;margin-top:4px">Chapter Complete!</div>
+    </div>
+  </div>`;
+}
+
+window.checkQuest = function(i) {
+  const row   = document.getElementById(`quest-row-${i}`);
+  const check = document.getElementById(`quest-check-${i}`);
+  if (!row || !check || check.dataset.done) return;
+  check.dataset.done = '1';
+  check.style.background='#3B82F6'; check.style.borderColor='#3B82F6'; check.textContent='✓'; check.style.color='#fff';
+  row.style.opacity='.5'; row.style.pointerEvents='none';
+  questDone++;
+  const bar = document.getElementById('quest-bar');
+  if (bar) bar.style.width = (questDone/4*100)+'%';
+  if (questDone >= 4) { const r=document.getElementById('quest-reward'); if(r) r.style.display='block'; }
+};
+
+function initQuestList() { questDone = 0; }
 
 // ── CD3: Combo Builder ────────────────────────────────────────
 const COMBO_TAGS = ['Progress Bar','Streak','Badge','Leaderboard','Scratch Card','Countdown Timer','Boss Fight','Random Reward','Social Proof','Quest List','Stamp Collection','Narrative'];
