@@ -88,6 +88,19 @@
     .panel-content { opacity: 0; transform: translateY(6px); transition: opacity .3s, transform .3s; }
     .panel-content.visible { opacity: 1; transform: translateY(0); }
 
+    /* TAB BAR */
+    .tab-bar {
+      display:flex; overflow-x:auto; border-bottom:1px solid var(--border);
+      margin:-4px 0 16px; scrollbar-width:none;
+    }
+    .tab-bar::-webkit-scrollbar { display:none; }
+    .tab-btn {
+      padding:8px 14px; font-size:.7rem; font-weight:700; white-space:nowrap;
+      border:none; border-bottom:2px solid transparent; background:none;
+      cursor:pointer; color:var(--muted); transition:all .15s; flex-shrink:0;
+    }
+    .tab-btn:hover { color:var(--text); }
+
     /* FOOTER */
     .pg-footer {
       text-align: center; padding: 24px; border-top: 1px solid var(--border);
@@ -153,38 +166,61 @@ const DRIVES = [
   { cd:1, name:'Epic Meaning & Calling',      icon:'🌐', color:'#F59E0B',
     hat:'⬜ White Hat', brain:'🧠 Right Brain',
     desc:'The belief that you are doing something greater than yourself. When users feel chosen for a mission, effort becomes purposeful.',
-    demoId:'demo-cd1' },
+    tabs:[
+      {name:'Mission Counter', render:()=>renderMissionCounter(), init:()=>{}},
+    ]},
   { cd:2, name:'Development & Accomplishment', icon:'🏆', color:'#3B82F6',
     hat:'⬜ White Hat', brain:'🔢 Left Brain',
     desc:'The internal drive to progress, develop skills, and overcome challenges. Progress bars and XP make invisible growth visible.',
-    demoId:'demo-cd2' },
+    tabs:[
+      {name:'XP Level-Up', render:()=>renderXPLevelUp(), init:()=>initXPLevelUp()},
+    ]},
   { cd:3, name:'Empowerment of Creativity',    icon:'🧩', color:'#8B5CF6',
     hat:'⬜ White Hat', brain:'🧠 Right Brain',
     desc:'The drive to try new combinations and get meaningful feedback. When every choice leads to a unique outcome, creativity loops become addictive.',
-    demoId:'demo-cd3' },
+    tabs:[
+      {name:'Combo Builder', render:()=>renderComboBuilder(), init:()=>initComboBuilder()},
+    ]},
   { cd:4, name:'Ownership & Possession',       icon:'📦', color:'#10B981',
     hat:'⬜ White Hat', brain:'🔢 Left Brain',
     desc:'The drive to accumulate and protect things you own. Collection, virtual currency, and customisation trigger this drive deeply.',
-    demoId:'demo-cd4' },
+    tabs:[
+      {name:'Passport Stamps', render:()=>renderPassportStamps(), init:()=>initPassportStamps()},
+    ]},
   { cd:5, name:'Social Influence & Relatedness', icon:'👥', color:'#EC4899',
     hat:'⬜ White Hat', brain:'🧠 Right Brain',
     desc:'The drive to collaborate, compete, and belong. Seeing what peers do creates social benchmarking and conformity pressure.',
-    demoId:'demo-cd5' },
+    tabs:[
+      {name:'Live Pulse', render:()=>renderLivePulse(), init:()=>initLivePulse()},
+    ]},
   { cd:6, name:'Scarcity & Impatience',        icon:'⏳', color:'#F97316',
     hat:'⬛ Black Hat', brain:'🔢 Left Brain',
     desc:'Wanting something more because you cannot have it yet. Countdown timers and limited availability create urgent desire.',
-    demoId:'demo-cd6' },
+    tabs:[
+      {name:'Event Ticket', render:()=>renderEventTicket(), init:()=>initEventTicket()},
+    ]},
   { cd:7, name:'Unpredictability & Curiosity', icon:'🎲', color:'#06B6D4',
     hat:'⬛ Black Hat', brain:'🧠 Right Brain',
     desc:'Not knowing what comes next keeps the brain engaged. Variable rewards and hidden surprises create compulsive curiosity.',
-    demoId:'demo-cd7' },
+    tabs:[
+      {name:'Scratch Card', render:()=>renderScratchCard(), init:()=>initScratchCard()},
+    ]},
   { cd:8, name:'Loss & Avoidance',             icon:'🚩', color:'#EF4444',
     hat:'⬛ Black Hat', brain:'🔢 Left Brain',
     desc:'The drive to avoid losing what you already have. Streaks at risk, expiring progress, and FOMO are powerful motivators.',
-    demoId:'demo-cd8' }
+    tabs:[
+      {name:'Streak Tracker', render:()=>renderStreakTracker(), init:()=>initStreakTracker()},
+    ]},
 ];
 
 let activeCd = null;
+
+// Interval handles for all auto-running demos (cleared on drive/tab switch)
+let apptInterval = null;
+let lossInterval = null;
+let fomoInterval = null;
+let rollInterval = null;
+let chainTimer   = null;
 
 // ── Build playground octagon ────────────────────────────────────
 const pgSvg = document.getElementById('pg-oct-svg');
@@ -236,10 +272,37 @@ ct.setAttribute('fill', '#8b949e'); ct.setAttribute('font-family', 'system-ui, s
 ct.setAttribute('pointer-events', 'none'); ct.textContent = 'CLICK';
 pgSvg.appendChild(ct);
 
+// ── Clear all running demo intervals ────────────────────────────
+function clearAllIntervals() {
+  [pulseInterval, countdownInterval, apptInterval, lossInterval, fomoInterval, rollInterval, chainTimer]
+    .forEach(id => { if (id) clearInterval(id); });
+  pulseInterval = countdownInterval = apptInterval = lossInterval = fomoInterval = rollInterval = chainTimer = null;
+}
+
+// ── Tab bar renderer ────────────────────────────────────────────
+function renderTabBar(d, activeIdx) {
+  return d.tabs.map((t, i) =>
+    `<button class="tab-btn${i===activeIdx?' active':''}"
+      style="${i===activeIdx?`border-bottom-color:${d.color};color:${d.color}`:''}"
+      onclick="switchTab(${d.cd},${i})">${t.name}</button>`
+  ).join('');
+}
+
+// ── Activate a specific tab within the active drive ─────────────
+function activateTab(cd, tabIdx) {
+  clearAllIntervals();
+  const d   = DRIVES[cd - 1];
+  const tab = d.tabs[tabIdx];
+  const demoEl = document.getElementById('demo-content');
+  demoEl.classList.remove('visible');
+  demoEl.innerHTML = `<div class="tab-bar">${renderTabBar(d, tabIdx)}</div>${tab.render()}`;
+  requestAnimationFrame(() => { demoEl.classList.add('visible'); tab.init(); });
+}
+
+window.switchTab = function(cd, tabIdx) { activateTab(cd, tabIdx); };
+
 // ── Activate a drive ────────────────────────────────────────────
 function activateDrive(cd) {
-  if (pulseInterval) { clearInterval(pulseInterval); pulseInterval = null; }
-  if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
   activeCd = cd;
   const d = DRIVES[cd - 1];
 
@@ -271,13 +334,7 @@ function activateDrive(cd) {
   requestAnimationFrame(() => descEl.classList.add('visible'));
 
   // Render demo panel
-  const demoEl = document.getElementById('demo-content');
-  demoEl.classList.remove('visible');
-  demoEl.innerHTML = renderDemo(cd);
-  requestAnimationFrame(() => {
-    demoEl.classList.add('visible');
-    initDemo(cd);
-  });
+  activateTab(cd, 0);
 }
 
 // ── Demo renderer (returns HTML string) ─────────────────────────
